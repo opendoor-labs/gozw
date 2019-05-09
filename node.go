@@ -422,10 +422,12 @@ func (n *Node) receiveApplicationCommand(cmd serialapi.ApplicationCommand) {
 
 	case *alarm.Report:
 		spew.Dump(command.(*alarm.Report))
+		zap.String("alarmv1Report", command.(*alarm.Report).CommandIDString())
 		n.emitNodeEvent(command)
 
 	case *alarmv2.Report:
 		spew.Dump(command.(*alarmv2.Report))
+		zap.String("alarmv2Report", command.(*alarmv2.Report).CommandIDString())
 		n.emitNodeEvent(command)
 
 	//case usercode.Report:
