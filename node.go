@@ -2,9 +2,13 @@ package gozw
 
 import (
 	"fmt"
+	"github.com/gozwave/gozw/cc/alarm-v2"
 	"time"
 
+	"github.com/boltdb/bolt"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gozwave/gozw/cc"
+	"github.com/gozwave/gozw/cc/alarm"
 	"github.com/gozwave/gozw/cc/association"
 	"github.com/gozwave/gozw/cc/battery"
 	manufacturerspecific "github.com/gozwave/gozw/cc/manufacturer-specific"
@@ -15,8 +19,6 @@ import (
 	"github.com/gozwave/gozw/protocol"
 	"github.com/gozwave/gozw/serialapi"
 	"github.com/gozwave/gozw/util"
-	"github.com/boltdb/bolt"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	msgpack "gopkg.in/vmihailenco/msgpack.v2"
@@ -418,23 +420,28 @@ func (n *Node) receiveApplicationCommand(cmd serialapi.ApplicationCommand) {
 		n.receiveCommandClassVersion(cc.CommandClassID(report.RequestedCommandClass), report.CommandClassVersion)
 		n.saveToDb()
 
-		// case alarm.Report:
-		// 	spew.Dump(command.(alarm.Report))
-		//
-		// case usercode.Report:
-		// 	spew.Dump(command.(usercode.Report))
-		//
-		// case doorlock.OperationReport:
-		// 	spew.Dump(command.(doorlock.OperationReport))
-		//
-		// case thermostatmode.Report:
-		// 	spew.Dump(command.(thermostatmode.Report))
-		//
-		// case thermostatoperatingstate.Report:
-		// 	spew.Dump(command.(thermostatoperatingstate.Report))
-		//
-		// case thermostatsetpoint.Report:
-		// 	spew.Dump(command.(thermostatsetpoint.Report))
+	case *alarm.Report:
+		spew.Dump(command.(*alarm.Report))
+		n.emitNodeEvent(command)
+
+	case *alarmv2.Report:
+		spew.Dump(command.(*alarmv2.Report))
+		n.emitNodeEvent(command)
+
+	//case usercode.Report:
+	//	spew.Dump(command.(usercode.Report))
+	//
+	//case doorlock.OperationReport:
+	//	spew.Dump(command.(doorlock.OperationReport))
+	//
+	//case thermostatmode.Report:
+	//	spew.Dump(command.(thermostatmode.Report))
+	//
+	//case thermostatoperatingstate.Report:
+	//	spew.Dump(command.(thermostatoperatingstate.Report))
+	//
+	//case thermostatsetpoint.Report:
+	//	spew.Dump(command.(thermostatsetpoint.Report))
 
 	default:
 		n.emitNodeEvent(command)
