@@ -87,7 +87,7 @@ func (cmd *DeviceSpecificReport) UnmarshalBinary(data []byte) error {
 	}
 
 	{
-		length := (payload[1+2] >> 0) & 0x1F
+		length := (payload[1+2]) & 0x1F
 		cmd.DeviceIdData = payload[i : i+int(length)]
 		i += int(length)
 	}

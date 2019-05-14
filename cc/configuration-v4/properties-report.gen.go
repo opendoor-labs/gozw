@@ -35,7 +35,7 @@ type PropertiesReport struct {
 
 		Readonly bool
 
-		ReInclusionRequired bool
+		AlteringCapabilities bool
 
 		Format byte
 	}
@@ -96,7 +96,7 @@ func (cmd *PropertiesReport) UnmarshalBinary(data []byte) error {
 
 	cmd.Properties1.Readonly = payload[i]&0x40 == 0x40
 
-	cmd.Properties1.ReInclusionRequired = payload[i]&0x80 == 0x80
+	cmd.Properties1.AlteringCapabilities = payload[i]&0x80 == 0x80
 
 	i += 1
 
@@ -105,7 +105,7 @@ func (cmd *PropertiesReport) UnmarshalBinary(data []byte) error {
 	}
 
 	{
-		length := (payload[1+2] >> 0) & 0x07
+		length := (payload[1+2]) & 0x07
 		cmd.MinValue = payload[i : i+int(length)]
 		i += int(length)
 	}
@@ -115,7 +115,7 @@ func (cmd *PropertiesReport) UnmarshalBinary(data []byte) error {
 	}
 
 	{
-		length := (payload[1+2] >> 0) & 0x07
+		length := (payload[1+2]) & 0x07
 		cmd.MaxValue = payload[i : i+int(length)]
 		i += int(length)
 	}
@@ -125,7 +125,7 @@ func (cmd *PropertiesReport) UnmarshalBinary(data []byte) error {
 	}
 
 	{
-		length := (payload[1+2] >> 0) & 0x07
+		length := (payload[1+2]) & 0x07
 		cmd.DefaultValue = payload[i : i+int(length)]
 		i += int(length)
 	}
@@ -174,7 +174,7 @@ func (cmd *PropertiesReport) MarshalBinary() (payload []byte, err error) {
 			val &= ^byte(0x40) // flip bits off
 		}
 
-		if cmd.Properties1.ReInclusionRequired {
+		if cmd.Properties1.AlteringCapabilities {
 			val |= byte(0x80) // flip bits on
 		} else {
 			val &= ^byte(0x80) // flip bits off

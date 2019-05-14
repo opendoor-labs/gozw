@@ -55,12 +55,10 @@ func (cmd *NonceReport) UnmarshalBinary(data []byte) error {
 	i := 2
 
 	if len(payload) <= i {
-		return errors.New("slice index out of bounds")
+		return nil
 	}
 
-	cmd.NonceByte = payload[i : i+8]
-
-	i += 8
+	cmd.NonceByte = payload[i:]
 
 	return nil
 }
@@ -69,10 +67,6 @@ func (cmd *NonceReport) MarshalBinary() (payload []byte, err error) {
 	payload = make([]byte, 2)
 	payload[0] = byte(cmd.CommandClassID())
 	payload[1] = byte(cmd.CommandID())
-
-	if paramLen := len(cmd.NonceByte); paramLen > 8 {
-		return nil, errors.New("Length overflow in array parameter NonceByte")
-	}
 
 	payload = append(payload, cmd.NonceByte...)
 
