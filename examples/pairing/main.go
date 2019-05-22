@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gozwave/gozw"
