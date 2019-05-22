@@ -5,9 +5,9 @@ import (
 	"log"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gozwave/gozw"
 	switchbinary "github.com/gozwave/gozw/cc/switch-binary"
-	"github.com/davecgh/go-spew/spew"
 )
 
 var networkKey = []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
@@ -17,7 +17,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer client.Shutdown()
+	defer func() {
+		if err := client.Shutdown(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	spew.Dump(client.Controller)
 
