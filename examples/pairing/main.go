@@ -3,17 +3,15 @@ package main
 import (
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gozwave/gozw"
-	switchbinary "github.com/gozwave/gozw/cc/switch-binary"
 )
 
 var networkKey = []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 
 func main() {
-	client, err := gozw.NewDefaultClient("/tmp/data.db", "/dev/ttyACM0", 115200, networkKey)
+	client, err := gozw.NewDefaultClient("/tmp/data.db", "/dev/tty.usbmodem1431", 115200, networkKey)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,16 +27,16 @@ func main() {
 		fmt.Println(node.String())
 	}
 
-	node, err := client.Node(2)
-	if err != nil {
-		log.Fatalf("retrieve node: %v", err)
+	fmt.Println("removing node, put device in unpairing mode")
+	if _, err := client.RemoveNode(); err != nil {
+		log.Fatalf("failed to remove node: %v", err)
 	}
 
-	err = node.SendCommand(&switchbinary.Get{})
+	fmt.Println("adding node, put device in pairing mode")
+	node, err := client.AddNode()
 	if err != nil {
-		log.Fatalf("send command: %v", err)
+		log.Fatalf("failed to add node: %v", err)
 	}
 
-	time.Sleep(2 * time.Second)
-
+	fmt.Println(node.String())
 }
