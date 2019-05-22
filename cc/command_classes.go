@@ -79,7 +79,7 @@ func Parse(version uint8, payload []byte) (Command, error) {
 	factoriesMu.Unlock()
 
 	if !ok {
-		return nil, fmt.Errorf("%v: %x", ErrNotRegistered, payload[0])
+		return nil, fmt.Errorf("%v: %x %x %x", ErrNotRegistered, payload[0], payload[1], version)
 	}
 
 	command := factory()
