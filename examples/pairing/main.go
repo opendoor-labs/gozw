@@ -40,16 +40,4 @@ func main() {
 	}
 
 	fmt.Println(node.String())
-	// node, err := client.Node(2)
-	// if err != nil {
-	// 	log.Fatalf("retrieve node: %v", err)
-	// }
-
-	// err = node.SendCommand(&switchbinary.Get{})
-	// if err != nil {
-	// 	log.Fatalf("send command: %v", err)
-	// }
-
-	time.Sleep(2 * time.Second)
-
 }
