@@ -2,90 +2,111 @@
 
 
 [[projects]]
-  branch = "master"
-  name = "github.com/asaskevich/EventBus"
-  packages = ["."]
-  revision = "d46933a94f05c6657d7b923fcf5ac563ee37ec79"
-
-[[projects]]
+  digest = "1:0f98f59e9a2f4070d66f0c9c39561f68fcd1dc837b22a852d28d0003aebd1b1e"
   name = "github.com/boltdb/bolt"
   packages = ["."]
+  pruneopts = "UT"
   revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
   version = "v1.3.1"
 
 [[projects]]
+  digest = "1:b24d38b282bacf9791408a080f606370efa3d364e4b5fd9ba0f7b87786d3b679"
   name = "github.com/codegangsta/cli"
   packages = ["."]
+  pruneopts = "UT"
   revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
   version = "v1.20.0"
 
 [[projects]]
+  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
+  pruneopts = "UT"
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
 
 [[projects]]
+  digest = "1:15042ad3498153684d09f393bbaec6b216c8eec6d61f63dff711de7d64ed8861"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
+  pruneopts = "UT"
   revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
   version = "v1.1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:64df04e0de43de84a189aa337e72a33ee7b677add79f3d04853567bfdaf557d2"
   name = "github.com/looplab/fsm"
   packages = ["."]
+  pruneopts = "UT"
   revision = "8def87414f14eaa69e4ee40abd20a7c195cea6f4"
 
 [[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
+  pruneopts = "UT"
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
+  pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:3c4e17be65ccfad62984bfde86b98b2c3ed74012891d2715720b18b02974fbec"
   name = "github.com/reiver/go-stringcase"
   packages = ["."]
+  pruneopts = "UT"
   revision = "b80b3ac9fc374235d9f59d294a7c70ab5f53fdbf"
 
 [[projects]]
   branch = "master"
+  digest = "1:f1ed38d903aba816e05668ab788268f5aa979d6ae70091444db72c2727e8d08a"
   name = "github.com/reiver/go-whitespace"
   packages = ["."]
+  pruneopts = "UT"
   revision = "5c4ea59c072e7db2684f8ea04b6e95a58e0f690d"
 
 [[projects]]
+  digest = "1:f85e109eda8f6080877185d1c39e98dd8795e1780c08beca28304b87fd855a1c"
   name = "github.com/stretchr/testify"
   packages = ["assert"]
+  pruneopts = "UT"
   revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
   version = "v1.2.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:b9b666a56e920eaa59ffea0d25a9b848d7073be13689c4a29d04e4a0f548a031"
   name = "github.com/tarm/serial"
   packages = ["."]
+  pruneopts = "UT"
   revision = "eaafced92e9619f03c72527efeab21e326f3bc36"
 
 [[projects]]
+  digest = "1:777e729b475d3895c7229552aa10076f0d177daf37c0a72258006d046d329960"
   name = "go.uber.org/atomic"
   packages = ["."]
+  pruneopts = "UT"
   revision = "4e336646b2ef9fc6e47be8e21594178f98e5ebcf"
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:60bf2a5e347af463c42ed31a493d817f8a72f102543060ed992754e689805d1a"
   name = "go.uber.org/multierr"
   packages = ["."]
+  pruneopts = "UT"
   revision = "3c4937480c32f4c13a875a1829af76c98ca3d40a"
   version = "v1.1.0"
 
 [[projects]]
+  digest = "1:9580b1b079114140ade8cec957685344d14f00119e0241f6b369633cb346eeb3"
   name = "go.uber.org/zap"
   packages = [
     ".",
@@ -93,34 +114,42 @@
     "internal/bufferpool",
     "internal/color",
     "internal/exit",
-    "zapcore"
+    "zapcore",
   ]
+  pruneopts = "UT"
   revision = "eeedf312bc6c57391d84767a4cd413f02a917974"
   version = "v1.8.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:76ee51c3f468493aff39dbacc401e8831fbb765104cbf613b89bef01cf4bad70"
   name = "golang.org/x/net"
   packages = ["context"]
+  pruneopts = "UT"
   revision = "2491c5de3490fced2f6cff376127c667efeed857"
 
 [[projects]]
   branch = "master"
+  digest = "1:32f55762862902f08c5d28ed59fbe86cd0c38b088473ed072807467ebadc3f15"
   name = "golang.org/x/sys"
   packages = ["unix"]
+  pruneopts = "UT"
   revision = "d0faeb539838e250bd0a9db4182d48d4a1915181"
 
 [[projects]]
   branch = "master"
+  digest = "1:4d63ca26a477869856c95a8a9760a8405686065538bd375d1f1481a8f5528094"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
     "imports",
-    "internal/fastwalk"
+    "internal/fastwalk",
   ]
+  pruneopts = "UT"
   revision = "48418e5732e1b1e2a10207c8007a5f959e422f20"
 
 [[projects]]
+  digest = "1:59f595bc6a0e6733123a830095350106302b958653b1834baf4277e57923a0d3"
   name = "google.golang.org/appengine"
   packages = [
     ".",
@@ -131,29 +160,47 @@
     "internal/datastore",
     "internal/log",
     "internal/modules",
-    "internal/remote_api"
+    "internal/remote_api",
   ]
+  pruneopts = "UT"
   revision = "150dc57a1b433e64154302bdc40b6bb8aefa313a"
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:a7438a3f7f92a25e8fb1d67de9ff4fc3355b86249999bf131092b76823db13e6"
   name = "gopkg.in/vmihailenco/msgpack.v2"
   packages = [
     ".",
-    "codes"
+    "codes",
   ]
+  pruneopts = "UT"
   revision = "f4f8982de4ef0de18be76456617cc3f5d8d8141e"
   version = "v2.9.1"
 
 [[projects]]
+  digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
+  pruneopts = "UT"
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
   version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "160487ba39b13ce134e8d4432e9522bd6d275353ad7f7d3a879dc03b1be2a293"
+  input-imports = [
+    "github.com/boltdb/bolt",
+    "github.com/codegangsta/cli",
+    "github.com/davecgh/go-spew/spew",
+    "github.com/looplab/fsm",
+    "github.com/pkg/errors",
+    "github.com/reiver/go-stringcase",
+    "github.com/stretchr/testify/assert",
+    "github.com/tarm/serial",
+    "go.uber.org/zap",
+    "golang.org/x/tools/imports",
+    "gopkg.in/vmihailenco/msgpack.v2",
+    "gopkg.in/yaml.v2",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
