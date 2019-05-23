@@ -10,3 +10,6 @@ generate:
 
 bin:
 	go build -o bin/basic ./examples/basic
+
+graphviz:
+	cat fsm.dot | dot -Tpng -o fsm.png
