@@ -74,3 +74,10 @@ func (cmd *{{$structName}}) MarshalBinary() (payload []byte, err error) {
   {{template "marshal-command-params" .Command}}
   return
 }
+
+{{ if .FirstCommand }}
+func Noop() {
+     // does nothing, just here to allow
+     // consumers to invoke the init function
+}
+{{ end }}

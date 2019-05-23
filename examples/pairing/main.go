@@ -11,7 +11,7 @@ import (
 var networkKey = []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 
 func main() {
-	client, err := gozw.NewDefaultClient("/tmp/data.db", "/dev/tty.usbmodem1431", 115200, networkKey)
+	client, err := gozw.NewDefaultClient("/tmp/data.db", "/dev/tty.usbmodem1441", 115200, networkKey)
 	if err != nil {
 		log.Fatal(err)
 	}

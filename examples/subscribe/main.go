@@ -8,12 +8,17 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gozwave/gozw"
 	"github.com/gozwave/gozw/cc"
+	"github.com/gozwave/gozw/cc/allclasses"
 )
 
 var networkKey = []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 
+func init() {
+	allclasses.Noop()
+}
+
 func main() {
-	client, err := gozw.NewDefaultClient("/tmp/data.db", "/dev/tty.usbmodem1431", 115200, networkKey)
+	client, err := gozw.NewDefaultClient("/tmp/data.db", "/dev/tty.usbmodem1441", 115200, networkKey)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,9 +40,11 @@ func main() {
 		if err != nil {
 			log.Printf("failed to get node: %v", node)
 		}
-		fmt.Printf("event received: %s\n", e)
+		spew.Dump(e)
+
+		fmt.Printf("event received: %v\n", e)
 	})
 
-	time.Sleep(time.Second * 10)
+	time.Sleep(time.Second * 600)
 	fmt.Println("done listening, exiting")
 }

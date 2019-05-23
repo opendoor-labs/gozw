@@ -148,6 +148,7 @@ func (g *Generator) GenParser() error {
 }
 
 func (g *Generator) GenCommandClasses() error {
+	generated := []CommandClass{}
 	skipped := []CommandClass{}
 	for _, cc := range g.zwClasses.CommandClasses {
 
@@ -166,6 +167,8 @@ func (g *Generator) GenCommandClasses() error {
 		if can, _ := cc.CanGenerate(); !can {
 			skipped = append(skipped, cc)
 			continue
+		} else {
+			generated = append(generated, cc)
 		}
 
 		dirName := path.Join(g.output, cc.GetDirName())
@@ -174,13 +177,17 @@ func (g *Generator) GenCommandClasses() error {
 			return err
 		}
 
-		for _, cmd := range cc.Commands {
-			err := g.generateCommand(dirName, cc, cmd)
+		for i, cmd := range cc.Commands {
+			err := g.generateCommand(dirName, cc, cmd, i == 0)
 			if err != nil {
 				return err
 			}
 		}
 
+	}
+	err := g.generateCommandImporter(generated)
+	if err != nil {
+		return err
 	}
 
 	if len(skipped) > 0 {
@@ -194,18 +201,47 @@ func (g *Generator) GenCommandClasses() error {
 	return nil
 }
 
-func (g *Generator) generateCommand(dirName string, cc CommandClass, cmd Command) error {
+func (g *Generator) generateCommand(dirName string, cc CommandClass, cmd Command, firstCommand bool) error {
 	buf := bytes.NewBuffer([]byte{})
 
 	err := g.tpl.ExecuteTemplate(buf, "command", map[string]interface{}{
 		"CommandClass": cc,
 		"Command":      cmd,
+		"FirstCommand": firstCommand,
 	})
 	if err != nil {
 		return err
 	}
 
 	filename := path.Join(dirName, cmd.GetFileName(cc)+".gen.go")
+	fp, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+
+	defer fp.Close()
+
+	formatted, err := goFmtAndImports(filename, buf)
+	if err != nil {
+		return err
+	}
+
+	fp.Write(formatted)
+
+	return nil
+}
+
+func (g *Generator) generateCommandImporter(commandClasses []CommandClass) error {
+	buf := bytes.NewBuffer([]byte{})
+
+	err := g.tpl.ExecuteTemplate(buf, "import", map[string]interface{}{
+		"CommandClasses": commandClasses,
+	})
+	if err != nil {
+		return err
+	}
+
+	filename := path.Join("allclasses", "import.gen.go")
 	fp, err := os.Create(filename)
 	if err != nil {
 		return err
@@ -244,7 +280,7 @@ func (g *Generator) initTemplates() {
 	tpl = template.Must(tpl.New("marshal-variant").Parse(mustAsset("templates/marshal-variant.tpl")))
 	tpl = template.Must(tpl.New("unmarshal-command-params").Parse(mustAsset("templates/unmarshal-command-params.tpl")))
 	tpl = template.Must(tpl.New("unmarshal-variant").Parse(mustAsset("templates/unmarshal-variant.tpl")))
-
+	tpl = template.Must(tpl.New("import").Parse(mustAsset("templates/import.tpl")))
 	g.tpl = tpl
 }
 
