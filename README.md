@@ -82,6 +82,10 @@ Parses incoming frames using the frame parser and determines how to proceed base
 ### Session Layer
 Facilitates the request/response flow by queueing requests when awaiting responses and callbacks. Implements the Host Request/Response Session state machine as described in INS12350 section 6.6.3.
 
+The following image is a visualization of the session state machine:
+
+![Host Request/Response Session state machine visualization](https://github.com/opendoor-labs/gozw/blob/9bbb1fe139261c4e177b9271990548769b51ffab/fsm.png)
+
 #### Responsibilities
  - Locking to prevent request concurrency
  - Routing and matching of responses and callbacks to the appropriate handlers

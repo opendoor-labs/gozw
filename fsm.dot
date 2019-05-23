@@ -1,0 +1,24 @@
+ digraph fsm {
+    "idle" -> "idle" [ label = "PARSE_TIMEOUT" ];
+    "idle" -> "idle" [ label = "RX_NAK" ];
+    "idle" -> "idle" [ label = "RX_CAN" ];
+    "idle" -> "length" [ label = "RX_SOF" ];
+    "idle" -> "idle" [ label = "RX_ACK" ];
+    "data" -> "idle" [ label = "PARSE_TIMEOUT" ];
+    "length" -> "data" [ label = "RX_DATA" ];
+    "data_complete" -> "checksum" [ label = "RX_CHECKSUM" ];
+    "checksum" -> "idle" [ label = "CRC_NOTOK" ];
+    "checksum" -> "idle" [ label = "PARSE_TIMEOUT" ];
+    "length" -> "idle" [ label = "INVALID_LENGTH" ];
+    "length" -> "idle" [ label = "PARSE_TIMEOUT" ];
+    "length" -> "data" [ label = "RX_LENGTH" ];
+    "data" -> "data" [ label = "RX_DATA" ];
+    "data" -> "data_complete" [ label = "RX_DATA_COMPLETE" ];
+    "checksum" -> "idle" [ label = "CRC_OK" ];
+
+    "checksum";
+    "idle";
+    "length";
+    "data";
+    "data_complete";
+}
