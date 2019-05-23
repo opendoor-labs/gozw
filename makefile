@@ -11,3 +11,6 @@ bin:
 	go build -o bin/pairing ./examples/pairing
 	go build -o bin/subscribe ./examples/subscribe
 	go build -o bin/gen ./gen
+
+graphviz:
+	cat fsm.dot | dot -Tpng -o fsm.png
