@@ -84,7 +84,7 @@ Facilitates the request/response flow by queueing requests when awaiting respons
 
 The following image is a visualization of the session state machine:
 
-[[fsm.png|Host Request/Response Session state machine visualization]]
+![Host Request/Response Session state machine visualization](https://github.com/opendoor-labs/gozw/blob/9bbb1fe139261c4e177b9271990548769b51ffab/fsm.png)
 
 #### Responsibilities
  - Locking to prevent request concurrency
