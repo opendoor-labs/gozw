@@ -53,3 +53,8 @@ func (cmd *ConfigurationGet) MarshalBinary() (payload []byte, err error) {
 
 	return
 }
+
+func Noop() {
+	// does nothing, just here to allow
+	// consumers to invoke the init function
+}
