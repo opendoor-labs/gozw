@@ -124,7 +124,7 @@ func (cmd *Report) UnmarshalBinary(data []byte) error {
 	i += 1
 
 	if len(payload) <= i {
-		return errors.New("slice index out of bounds")
+		return nil // field is optional
 	}
 
 	{
@@ -134,7 +134,7 @@ func (cmd *Report) UnmarshalBinary(data []byte) error {
 	}
 
 	if len(payload) <= i {
-		return errors.New("slice index out of bounds")
+		return nil // field is optional
 	}
 
 	cmd.SequenceNumber = payload[i]

@@ -96,14 +96,14 @@ func (cmd *MessageEncapsulation) UnmarshalBinary(data []byte) error {
 	i += len(cmd.CommandByte)
 
 	if len(payload) <= i {
-		return errors.New("slice index out of bounds")
+		return nil // field is optional
 	}
 
 	cmd.ReceiversNonceIdentifier = payload[i]
 	i++
 
 	if len(payload) <= i {
-		return errors.New("slice index out of bounds")
+		return nil // field is optional
 	}
 
 	cmd.MessageAuthenticationCodeByte = payload[i : i+8]
