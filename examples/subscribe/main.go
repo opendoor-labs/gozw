@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
@@ -18,7 +19,11 @@ func init() {
 }
 
 func main() {
-	client, err := gozw.NewDefaultClient("/tmp/data.db", "/dev/tty.usbmodem1441", 115200, networkKey)
+	devicePath := "/dev/ttyACM0"
+	if p := os.Getenv("GOZW_DEVICE_PATH"); p != "" {
+		devicePath = p
+	}
+	client, err := gozw.NewDefaultClient("/tmp/data.db", devicePath, 115200, networkKey)
 	if err != nil {
 		log.Fatal(err)
 	}
