@@ -76,7 +76,7 @@ func (cmd *EventSupportedReport) UnmarshalBinary(data []byte) error {
 	i += 1
 
 	if len(payload) <= i {
-		return errors.New("slice index out of bounds")
+		return nil // field is optional
 	}
 
 	cmd.BitMask = payload[i:]

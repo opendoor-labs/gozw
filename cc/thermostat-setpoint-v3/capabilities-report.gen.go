@@ -97,7 +97,7 @@ func (cmd *CapabilitiesReport) UnmarshalBinary(data []byte) error {
 	i += 1
 
 	if len(payload) <= i {
-		return errors.New("slice index out of bounds")
+		return nil // field is optional
 	}
 
 	{
@@ -107,7 +107,7 @@ func (cmd *CapabilitiesReport) UnmarshalBinary(data []byte) error {
 	}
 
 	if len(payload) <= i {
-		return errors.New("slice index out of bounds")
+		return nil // field is optional
 	}
 
 	cmd.Properties3.Size2 = (payload[i] & 0x07)
@@ -119,7 +119,7 @@ func (cmd *CapabilitiesReport) UnmarshalBinary(data []byte) error {
 	i += 1
 
 	if len(payload) <= i {
-		return errors.New("slice index out of bounds")
+		return nil // field is optional
 	}
 
 	{
