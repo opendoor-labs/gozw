@@ -80,7 +80,7 @@ func (cmd *Report) UnmarshalBinary(data []byte) error {
 	}
 
 	{
-		length := (payload[1+2] >> 0) & 0x07
+		length := (payload[1+2]) & 0x07
 		cmd.ConfigurationValue = payload[i : i+int(length)]
 		i += int(length)
 	}

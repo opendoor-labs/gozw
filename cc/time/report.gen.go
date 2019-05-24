@@ -27,7 +27,7 @@ func NewReport() cc.Command {
 
 // <no value>
 type Report struct {
-	HourLocalTime struct {
+	Properties1 struct {
 		HourLocalTime byte
 
 		RtcFailure bool
@@ -66,9 +66,9 @@ func (cmd *Report) UnmarshalBinary(data []byte) error {
 		return errors.New("slice index out of bounds")
 	}
 
-	cmd.HourLocalTime.HourLocalTime = (payload[i] & 0x1F)
+	cmd.Properties1.HourLocalTime = (payload[i] & 0x1F)
 
-	cmd.HourLocalTime.RtcFailure = payload[i]&0x80 == 0x80
+	cmd.Properties1.RtcFailure = payload[i]&0x80 == 0x80
 
 	i += 1
 
@@ -97,9 +97,9 @@ func (cmd *Report) MarshalBinary() (payload []byte, err error) {
 	{
 		var val byte
 
-		val |= (cmd.HourLocalTime.HourLocalTime) & byte(0x1F)
+		val |= (cmd.Properties1.HourLocalTime) & byte(0x1F)
 
-		if cmd.HourLocalTime.RtcFailure {
+		if cmd.Properties1.RtcFailure {
 			val |= byte(0x80) // flip bits on
 		} else {
 			val &= ^byte(0x80) // flip bits off

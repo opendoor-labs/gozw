@@ -18,6 +18,7 @@ import (
 	"github.com/gozwave/gozw/cc/door-lock-logging"
 	"github.com/gozwave/gozw/cc/door-lock-v2"
 	"github.com/gozwave/gozw/cc/door-lock-v3"
+	"github.com/gozwave/gozw/cc/door-lock-v4"
 	"github.com/gozwave/gozw/cc/manufacturer-specific"
 	"github.com/gozwave/gozw/cc/manufacturer-specific-v2"
 	"github.com/gozwave/gozw/cc/node-naming"
@@ -28,6 +29,7 @@ import (
 	"github.com/gozwave/gozw/cc/sensor-configuration"
 	"github.com/gozwave/gozw/cc/sensor-multilevel"
 	"github.com/gozwave/gozw/cc/sensor-multilevel-v10"
+	"github.com/gozwave/gozw/cc/sensor-multilevel-v11"
 	"github.com/gozwave/gozw/cc/sensor-multilevel-v2"
 	"github.com/gozwave/gozw/cc/sensor-multilevel-v3"
 	"github.com/gozwave/gozw/cc/sensor-multilevel-v4"
@@ -63,8 +65,10 @@ import (
 	"github.com/gozwave/gozw/cc/time"
 	"github.com/gozwave/gozw/cc/time-v2"
 	"github.com/gozwave/gozw/cc/user-code"
+	"github.com/gozwave/gozw/cc/user-code-v2"
 	"github.com/gozwave/gozw/cc/version"
 	"github.com/gozwave/gozw/cc/version-v2"
+	"github.com/gozwave/gozw/cc/version-v3"
 	"github.com/gozwave/gozw/cc/wake-up"
 	"github.com/gozwave/gozw/cc/wake-up-v2"
 )
@@ -88,6 +92,7 @@ func init() {
 	doorlock.Noop()
 	doorlockv2.Noop()
 	doorlockv3.Noop()
+	doorlockv4.Noop()
 	manufacturerspecific.Noop()
 	manufacturerspecificv2.Noop()
 	nodenaming.Noop()
@@ -103,6 +108,7 @@ func init() {
 	sensormultilevelv8.Noop()
 	sensormultilevelv9.Noop()
 	sensormultilevelv10.Noop()
+	sensormultilevelv11.Noop()
 	switchall.Noop()
 	switchbinary.Noop()
 	switchbinaryv2.Noop()
@@ -127,8 +133,10 @@ func init() {
 	time.Noop()
 	timev2.Noop()
 	usercode.Noop()
+	usercodev2.Noop()
 	version.Noop()
 	versionv2.Noop()
+	versionv3.Noop()
 	wakeup.Noop()
 	wakeupv2.Noop()
 	switchcolor.Noop()

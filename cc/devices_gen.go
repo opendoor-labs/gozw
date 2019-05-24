@@ -129,6 +129,7 @@ const (
 	SpecificTypeDoorbell                     SpecificDeviceType = 0x12
 	SpecificTypeSatelliteReceiver            SpecificDeviceType = 0x04
 	SpecificTypeSatelliteReceiverV2          SpecificDeviceType = 0x11
+	SpecificTypeSoundSwitch                  SpecificDeviceType = 0x01
 	SpecificTypeSimpleDisplay                SpecificDeviceType = 0x01
 	SpecificTypeDoorLock                     SpecificDeviceType = 0x01
 	SpecificTypeAdvancedDoorLock             SpecificDeviceType = 0x02
@@ -219,6 +220,7 @@ var SpecificDeviceTypeNames map[GenericDeviceType]map[SpecificDeviceType]string 
 		SpecificTypeDoorbell:            "Doorbell",
 		SpecificTypeSatelliteReceiver:   "Satellite Receiver",
 		SpecificTypeSatelliteReceiverV2: "Satellite Receiver V2",
+		SpecificTypeSoundSwitch:         "Sound Switch",
 	},
 	GenericTypeDisplay: map[SpecificDeviceType]string{
 		SpecificTypeNotUsed:       "Not Used",
