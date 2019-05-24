@@ -1,7 +1,5 @@
 {{$variant := (index .Variant 0)}}{{if $variant.MarkerDelimited}}
-if len(payload) <= i {
-  return errors.New("slice index out of bounds")
-}
+{{ template "exists" . }}
 
 {
   fieldStart := i
@@ -10,9 +8,7 @@ if len(payload) <= i {
 }
 {{else}}
 {{if ne $variant.ParamOffset 255}}
-if len(payload) <= i {
-  return errors.New("slice index out of bounds")
-}
+{{ template "exists" . }}
 
 {
   length := (payload[{{$variant.ParamOffset}}+2]{{with $variant.SizeOffset}}>>{{.}}{{end}}){{with $variant.SizeMask}}&{{.}}{{end}}

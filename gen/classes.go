@@ -341,6 +341,8 @@ type Param struct {
 	Variant     []Variant     `xml:"variant"`
 	Bitmask     []Bitmask     `xml:"bitmask"`
 	Word        []Word        `xml:"word"`
+
+	isOptional bool `xml:"-"`
 }
 
 // IsNotReserved will return false if the parameter name is reserved.
@@ -446,6 +448,52 @@ func (p Param) GetGoType() (string, error) {
 		return "", errors.New("Unknown param type: " + p.Type)
 
 	}
+}
+
+// IsOptional returns whether the param is optinal,
+// this allows the generator to not enforce existence
+// constraints
+func (p Param) IsOptional() bool {
+	return p.isOptional
+}
+
+func (p Param) DefinesVariableLengthFrame() bool {
+	// TODO(zacatac): Define as constant
+	if p.Type != "STRUCT_BYTE" {
+		// For now, we are only considering variable
+		// fields defined by STRUCT_BYTEs
+		return false
+	}
+
+	for _, bitfield := range p.BitField {
+		if fieldNameDefinesVariableLengthField(bitfield.FieldName) {
+			return true
+		}
+
+	}
+	return false
+}
+
+// fieldNameDefinesVariableLengthField returns whether a given field
+// name defines an optional or variable length field
+func fieldNameDefinesVariableLengthField(fieldName string) bool {
+	// Note: This list is not exhaustive, and it may
+	// even allow some false positives
+	// It is also highly dependent on the language in the
+	// XML file itself.
+	keywords := []string{
+		"length",   // e.g. "Event Parameters Length"
+		"sequence", // e.g. "Sequence"
+		"number",   // e.g. "Number of Bit Masks"
+		"size",     // e.g. "Size" (as it refers to a value)
+	}
+	normalizedFieldName := strings.ToLower(fieldName)
+	for _, keyword := range keywords {
+		if strings.Contains(normalizedFieldName, keyword) {
+			return true
+		}
+	}
+	return false
 }
 
 type ArrayAttrib struct {
