@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/boltdb/bolt"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gozwave/gozw/cc"
 	"github.com/gozwave/gozw/cc/association"
 	"github.com/gozwave/gozw/cc/battery"
@@ -15,8 +17,6 @@ import (
 	"github.com/gozwave/gozw/protocol"
 	"github.com/gozwave/gozw/serialapi"
 	"github.com/gozwave/gozw/util"
-	"github.com/boltdb/bolt"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	msgpack "gopkg.in/vmihailenco/msgpack.v2"
@@ -371,6 +371,7 @@ func (n *Node) receiveApplicationCommand(cmd serialapi.ApplicationCommand) {
 		}
 	}
 
+	n.client.l.Info("command data passed to parser", zap.String("data", fmt.Sprintf("%x", cmd.CommandData)))
 	command, err := cc.Parse(ver, cmd.CommandData)
 	if err != nil {
 		n.client.l.Error("error parsing command class", zap.Error(err))
