@@ -128,7 +128,7 @@ func (cmd *Report) UnmarshalBinary(data []byte) error {
 	}
 
 	{
-		length := (payload[6+2] >> 0) & 0x1F
+		length := (payload[6+2]) & 0x1F
 		cmd.EventParameter = payload[i : i+int(length)]
 		i += int(length)
 	}

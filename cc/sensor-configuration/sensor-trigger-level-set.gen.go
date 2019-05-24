@@ -104,7 +104,7 @@ func (cmd *SensorTriggerLevelSet) UnmarshalBinary(data []byte) error {
 	}
 
 	{
-		length := (payload[2+2] >> 0) & 0x07
+		length := (payload[2+2]) & 0x07
 		cmd.TriggerValue = payload[i : i+int(length)]
 		i += int(length)
 	}
