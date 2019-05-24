@@ -177,6 +177,18 @@ func (g *Generator) GenCommandClasses() error {
 			return err
 		}
 
+		// label whether a given command is optional, allowing for it
+		// and the following commands to be of varidic length
+		for i, cmd := range cc.Commands {
+			paramIsOptional := false
+			for j, param := range cmd.Params {
+				cc.Commands[i].Params[j].isOptional = paramIsOptional
+				if param.DefinesVariableLengthFrame() {
+					paramIsOptional = true
+				}
+			}
+		}
+
 		for i, cmd := range cc.Commands {
 			err := g.generateCommand(dirName, cc, cmd, i == 0)
 			if err != nil {
