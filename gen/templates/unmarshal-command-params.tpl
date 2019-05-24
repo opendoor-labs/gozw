@@ -14,12 +14,15 @@
     {{else}}
       for i < int(cmd.{{$command.FindVgLengthVar $key $keys}}) {
     {{end}}
+    {{ToGoNameLower $vg.Name}} := {{$command.GetStructName $command.CC}}{{ToGoName $vg.Name}} {}
     {{template "unmarshal-command-vg-params" $vg}}
-    {{ToGoNameLower $vg.Name}} := {{$command.GetStructName $command.CC}}{{ToGoName $vg.Name}} {
-      {{range $_, $param := $vg.Params}}
-        {{ToGoName $param.Name}}: {{ToGoNameLower $param.Name}},
-      {{end}}
-    }
+    {{range $_, $param := $vg.Params}}
+      {{ if eq $param.Type "STRUCT_BYTE" -}}
+       // struct byte fields are assigned to the variant group when computed
+      {{- else -}}
+      {{ToGoNameLower $vg.Name}}.{{ToGoName $param.Name}} = {{ToGoNameLower $param.Name}}
+      {{- end}}
+    {{end}}
     cmd.{{ToGoName $vg.Name}} = append(cmd.{{ToGoName $vg.Name}}, {{ToGoNameLower $vg.Name}})
     }
   {{end}}

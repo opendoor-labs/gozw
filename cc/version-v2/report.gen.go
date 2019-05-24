@@ -125,6 +125,8 @@ func (cmd *Report) UnmarshalBinary(data []byte) error {
 
 	for i < len(payload) {
 
+		vg := ReportVg{}
+
 		if len(payload) <= i {
 			return errors.New("slice index out of bounds")
 		}
@@ -139,12 +141,10 @@ func (cmd *Report) UnmarshalBinary(data []byte) error {
 		firmwareSubVersion := payload[i]
 		i++
 
-		vg := ReportVg{
+		vg.FirmwareVersion = firmwareVersion
 
-			FirmwareVersion: firmwareVersion,
+		vg.FirmwareSubVersion = firmwareSubVersion
 
-			FirmwareSubVersion: firmwareSubVersion,
-		}
 		cmd.Vg = append(cmd.Vg, vg)
 	}
 

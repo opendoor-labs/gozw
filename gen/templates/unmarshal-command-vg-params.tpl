@@ -1,23 +1,23 @@
+{{ $vg := . }}
 {{ range $_, $param := .Params}}
     {{if eq $param.Type "VARIANT"}}
-        {{template "unmarshal-variant" .}}
+        {{template "unmarshal-vg-variant" .}}
     {{else if eq $param.Type "STRUCT_BYTE"}}{{$name := ToGoName $param.Name}}
         if len(payload) <= i {
             return errors.New("slice index out of bounds")
         }
 
-        var {{ToGoNameLower $param.Name}} {{$name}}
         {{range $_, $bf := $param.BitField}}
             {{if $bf.IsNotReserved}}
-                {{ToGoNameLower $param.Name}}.{{ToGoName $bf.FieldName}} = (payload[i]{{with $bf.FieldMask}}&{{.}}{{end}}){{with $bf.Shifter}}>>{{.}}{{end}}
+                {{ToGoNameLower $vg.Name}}.{{$name}}.{{ToGoName $bf.FieldName}} = (payload[i]{{with $bf.FieldMask}}&{{.}}{{end}}){{with $bf.Shifter}}>>{{.}}{{end}}
             {{end}}
         {{end}}
         {{range $_, $fe := $param.FieldEnum}}
-            {{ToGoNameLower $param.Name}}.{{ToGoName $fe.FieldName}} = (payload[i]{{with $fe.FieldMask}}&{{.}}{{end}}){{with $fe.Shifter}}>>{{.}}{{end}}
+            {{ToGoNameLower $vg.Name}}.{{$name}}.{{ToGoName $fe.FieldName}} = (payload[i]{{with $fe.FieldMask}}&{{.}}{{end}}){{with $fe.Shifter}}>>{{.}}{{end}}
         {{end}}
         {{range $_, $bf := $param.BitFlag}}
             {{if $bf.IsNotReserved}}
-                {{ToGoNameLower $param.Name}}.{{ToGoName $bf.FlagName}} = payload[i] & {{$bf.FlagMask}} == {{$bf.FlagMask}}
+                {{ToGoNameLower $vg.Name}}.{{$name}}.{{ToGoName $bf.FlagName}} = payload[i] & {{$bf.FlagMask}} == {{$bf.FlagMask}}
             {{end}}
         {{end}}
         i += 1
@@ -72,7 +72,6 @@
         if len(payload) <= i {
             return errors.New("slice index out of bounds")
         }
-        
         {{if $param.IsNotReserved}}
             {{ToGoNameLower $param.Name}} := payload[i]
             i++

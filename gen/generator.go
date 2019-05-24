@@ -292,6 +292,7 @@ func (g *Generator) initTemplates() {
 	tpl = template.Must(tpl.New("marshal-variant").Parse(mustAsset("templates/marshal-variant.tpl")))
 	tpl = template.Must(tpl.New("unmarshal-command-params").Parse(mustAsset("templates/unmarshal-command-params.tpl")))
 	tpl = template.Must(tpl.New("unmarshal-variant").Parse(mustAsset("templates/unmarshal-variant.tpl")))
+	tpl = template.Must(tpl.New("unmarshal-vg-variant").Parse(mustAsset("templates/unmarshal-vg-variant.tpl")))
 	tpl = template.Must(tpl.New("import").Parse(mustAsset("templates/import.tpl")))
 	g.tpl = tpl
 }
