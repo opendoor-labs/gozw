@@ -74,5 +74,8 @@
     {{if .IsNotReserved}}
       cmd.{{ToGoName .Name}} = payload[i]
       i++
+    {{else}}
+      i++ // skipping over reserved bit
     {{end}}
+
   {{end}}

@@ -90,6 +90,8 @@ func (cmd *Report) UnmarshalBinary(data []byte) error {
 		return errors.New("slice index out of bounds")
 	}
 
+	i++ // skipping over reserved bit
+
 	if len(payload) <= i {
 		return errors.New("slice index out of bounds")
 	}

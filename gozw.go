@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/boltdb/bolt"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gozwave/gozw/cc"
 	zwsec "github.com/gozwave/gozw/cc/security"
 	"github.com/gozwave/gozw/frame"
@@ -15,8 +17,6 @@ import (
 	"github.com/gozwave/gozw/serialapi"
 	"github.com/gozwave/gozw/session"
 	"github.com/gozwave/gozw/transport"
-	"github.com/boltdb/bolt"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
@@ -516,7 +516,7 @@ func (c *Client) interceptSecurityCommandClass(cmd serialapi.ApplicationCommand)
 			return
 		}
 
-		c.l.Info("received encapsulated message", zap.String("data", spew.Sdump(decrypted)))
+		c.l.Info("received encapsulated message", zap.String("data", spew.Sdump(decrypted)), zap.String("dataBytes", fmt.Sprintf("%x", decrypted)))
 
 		if decrypted[1] == byte(cc.Security) &&
 			decrypted[2] == byte(zwsec.CommandNetworkKeyVerify) {
