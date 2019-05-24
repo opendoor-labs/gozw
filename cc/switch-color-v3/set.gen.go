@@ -76,6 +76,8 @@ func (cmd *Set) UnmarshalBinary(data []byte) error {
 
 	for i < int(cmd.Properties1.ColorComponentCount) {
 
+		vg1 := SetVg1{}
+
 		if len(payload) <= i {
 			return errors.New("slice index out of bounds")
 		}
@@ -90,12 +92,10 @@ func (cmd *Set) UnmarshalBinary(data []byte) error {
 		value := payload[i]
 		i++
 
-		vg1 := SetVg1{
+		vg1.ColorComponentId = colorComponentId
 
-			ColorComponentId: colorComponentId,
+		vg1.Value = value
 
-			Value: value,
-		}
 		cmd.Vg1 = append(cmd.Vg1, vg1)
 	}
 
