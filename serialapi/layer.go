@@ -25,6 +25,7 @@ type ILayer interface {
 	RemoveFailedNode(nodeID byte) (removed bool, err error)
 	RequestNodeInfo(nodeInfo byte) (*NodeInfoFrame, error)
 	SoftReset()
+	FactoryReset()
 }
 
 // Layer contains the serial api layer.

@@ -227,6 +227,11 @@ func (c *Client) Shutdown() error {
 	return nil
 }
 
+func (c *Client) FactoryReset() error {
+	c.serialAPI.FactoryReset()
+	return nil
+}
+
 func (c *Client) AddNode() (*Node, error) {
 	newNodeInfo, err := c.serialAPI.AddNode()
 	if err != nil {
