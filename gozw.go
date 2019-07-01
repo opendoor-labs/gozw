@@ -116,13 +116,38 @@ func (c *Client) initDb(dbName string) (err error) {
 	if err != nil {
 		return
 	}
-
 	c.db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte("nodes"))
 		if err != nil {
 			return err
 		}
 
+		_, err = tx.CreateBucketIfNotExists([]byte("controller"))
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+	return err
+}
+
+func (c *Client) clearDb() (err error) {
+	c.db.Update(func(tx *bolt.Tx) error {
+		nodeDeleteErr := tx.DeleteBucket([]byte("nodes"))
+		if nodeDeleteErr != nil {
+			return nodeDeleteErr
+		}
+
+		_, err := tx.CreateBucketIfNotExists([]byte("nodes"))
+		if err != nil {
+			return err
+		}
+
+		controllerDeleteErr := tx.DeleteBucket([]byte("controller"))
+		if controllerDeleteErr != nil {
+			return controllerDeleteErr
+		}
 		_, err = tx.CreateBucketIfNotExists([]byte("controller"))
 		if err != nil {
 			return err
@@ -229,6 +254,11 @@ func (c *Client) Shutdown() error {
 
 func (c *Client) FactoryReset() error {
 	c.serialAPI.FactoryReset()
+	err := c.clearDb()
+	if err != nil {
+		return err
+	}
+	c.serialAPI.SoftReset()
 	return nil
 }
 
