@@ -207,12 +207,16 @@ func (c *Client) PruneNodes() error {
 
 	if err != nil {
 		fmt.Print(err)
+		return err
 	}
 	for id, node := range dbNodes {
 		inNodeList := contains(nodeList, id)
 		if !inNodeList {
-			node.removeFromDb()
+			err = node.removeFromDb()
 			delete(c.nodes, id)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -282,6 +286,7 @@ func (c *Client) Shutdown() error {
 
 func (c *Client) FactoryReset() error {
 	c.serialAPI.FactoryReset()
+	c.PruneNodes()
 	err := c.clearDb()
 	if err != nil {
 		return err
@@ -292,6 +297,7 @@ func (c *Client) FactoryReset() error {
 
 func (c *Client) AddNode() (*Node, error) {
 	newNodeInfo, err := c.serialAPI.AddNode()
+	c.PruneNodes()
 	if err != nil {
 		return nil, err
 	}
@@ -332,6 +338,7 @@ func (c *Client) AddNode() (*Node, error) {
 
 func (c *Client) RemoveNode() (byte, error) {
 	result, err := c.serialAPI.RemoveNode()
+	c.PruneNodes()
 	if err != nil {
 		return 0, err
 	}
