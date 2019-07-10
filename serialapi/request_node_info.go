@@ -4,10 +4,10 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gozwave/gozw/frame"
 	"github.com/gozwave/gozw/protocol"
 	"github.com/gozwave/gozw/session"
-	"github.com/davecgh/go-spew/spew"
 )
 
 // RequestNodeInfo will request info for a node.

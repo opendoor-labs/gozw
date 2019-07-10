@@ -190,6 +190,34 @@ func (c *Client) Nodes() map[byte]*Node {
 	return c.nodes
 }
 
+func contains(s []byte, e byte) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
+// Will prune any duplicate nodes from the database
+func (c *Client) PruneNodes() error {
+	dbNodes := c.Nodes()
+	initData, err := c.serialAPI.GetInitAppData()
+	nodeList := initData.GetNodeIDs()
+
+	if err != nil {
+		fmt.Print(err)
+	}
+	for id, node := range dbNodes {
+		inNodeList := contains(nodeList, id)
+		if !inNodeList {
+			node.removeFromDb()
+			delete(c.nodes, id)
+		}
+	}
+	return nil
+}
+
 // Node will retrieve a single node.
 func (c *Client) Node(nodeID byte) (*Node, error) {
 	if node, ok := c.nodes[nodeID]; ok {

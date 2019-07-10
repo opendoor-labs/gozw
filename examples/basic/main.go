@@ -22,6 +22,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	defer func() {
 		if err := client.Shutdown(); err != nil {
 			log.Fatal(err)
