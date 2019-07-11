@@ -133,13 +133,11 @@ func (n *Node) initialize() error {
 }
 
 func (n *Node) removeFromDb() error {
-	err := n.client.db.View(func(tx *bolt.Tx) error {
+	return n.client.db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte("nodes"))
 		err := bucket.Delete([]byte{n.NodeID})
 		return err
 	})
-
-	return err
 }
 
 func (n *Node) saveToDb() error {
