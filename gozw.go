@@ -224,7 +224,7 @@ func (c *Client) PruneNodes() error {
 
 // Node will retrieve a single node.
 func (c *Client) Node(nodeID byte) (*Node, error) {
-	if node, ok := c.nodes[nodeID]; ok {
+	if node, ok := c.Nodes()[nodeID]; ok {
 		return node, nil
 	}
 

@@ -22,7 +22,14 @@ import (
 	msgpack "gopkg.in/vmihailenco/msgpack.v2"
 )
 
+type GoZWNode interface {
+	loadFromDb() error
+	removeFromDb() error
+	saveToDb() error
+}
+
 type Node struct {
+	GoZWNode
 	NodeID byte
 
 	Capability          byte
