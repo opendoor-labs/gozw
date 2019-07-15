@@ -4,10 +4,11 @@ import (
 	"errors"
 
 	"github.com/davecgh/go-spew/spew"
+	"go.uber.org/zap"
+
 	"github.com/gozwave/gozw/frame"
 	"github.com/gozwave/gozw/protocol"
 	"github.com/gozwave/gozw/session"
-	"go.uber.org/zap"
 )
 
 // RequestNodeInfo will request info for a node.
