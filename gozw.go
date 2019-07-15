@@ -190,9 +190,41 @@ func (c *Client) Nodes() map[byte]*Node {
 	return c.nodes
 }
 
+func contains(s []byte, e byte) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
+// Will prune any duplicate nodes from the database
+func (c *Client) PruneNodes() error {
+	dbNodes := c.Nodes()
+	initData, err := c.serialAPI.GetInitAppData()
+	if err != nil {
+		return err
+	}
+
+	nodeList := initData.GetNodeIDs()
+
+	for id, node := range dbNodes {
+		inNodeList := contains(nodeList, id)
+		if !inNodeList {
+			err = node.removeFromDb()
+			if err != nil {
+				return err
+			}
+			delete(c.nodes, id)
+		}
+	}
+	return nil
+}
+
 // Node will retrieve a single node.
 func (c *Client) Node(nodeID byte) (*Node, error) {
-	if node, ok := c.nodes[nodeID]; ok {
+	if node, ok := c.Nodes()[nodeID]; ok {
 		return node, nil
 	}
 
@@ -254,7 +286,12 @@ func (c *Client) Shutdown() error {
 
 func (c *Client) FactoryReset() error {
 	c.serialAPI.FactoryReset()
-	err := c.clearDb()
+	err := c.PruneNodes()
+	if err != nil {
+		return err
+	}
+
+	err = c.clearDb()
 	if err != nil {
 		return err
 	}
@@ -264,6 +301,11 @@ func (c *Client) FactoryReset() error {
 
 func (c *Client) AddNode() (*Node, error) {
 	newNodeInfo, err := c.serialAPI.AddNode()
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.PruneNodes()
 	if err != nil {
 		return nil, err
 	}
@@ -304,6 +346,11 @@ func (c *Client) AddNode() (*Node, error) {
 
 func (c *Client) RemoveNode() (byte, error) {
 	result, err := c.serialAPI.RemoveNode()
+	if err != nil {
+		return 0, err
+	}
+
+	err = c.PruneNodes()
 	if err != nil {
 		return 0, err
 	}

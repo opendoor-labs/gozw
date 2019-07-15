@@ -22,7 +22,14 @@ import (
 	msgpack "gopkg.in/vmihailenco/msgpack.v2"
 )
 
+type GoZWNode interface {
+	loadFromDb() error
+	removeFromDb() error
+	saveToDb() error
+}
+
 type Node struct {
+	GoZWNode
 	NodeID byte
 
 	Capability          byte
@@ -130,6 +137,14 @@ func (n *Node) initialize() error {
 
 	return n.saveToDb()
 
+}
+
+func (n *Node) removeFromDb() error {
+	return n.client.db.View(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte("nodes"))
+		err := bucket.Delete([]byte{n.NodeID})
+		return err
+	})
 }
 
 func (n *Node) saveToDb() error {
