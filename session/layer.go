@@ -76,7 +76,7 @@ func (s *Layer) receiveThread() {
 	for {
 		select {
 		case frameIn := <-s.frameLayer.GetOutputChannel():
-			s.l.Debug("frame recieved")
+			s.l.Debug("frame received")
 
 			if frameIn.IsResponse() {
 				s.l.Debug("was response")
@@ -104,7 +104,6 @@ func (s *Layer) receiveThread() {
 					case s.responses <- *frame.NewCanFrame():
 					default:
 					}
-					return
 				}
 
 				switch frameIn.Payload[0] {
@@ -189,8 +188,8 @@ func (s *Layer) sendThread() {
 						time.Sleep(100 * time.Millisecond)
 						if attempts > 3 {
 							s.l.Error("too many retries")
-							request.ReturnCallback(errors.New("Too many retries sending command"), nil)
-							return
+							request.ReturnCallback(errors.New("too many retries sending command"), nil)
+							continue
 						}
 
 						attempts++
@@ -202,7 +201,7 @@ func (s *Layer) sendThread() {
 					}
 
 				case <-time.After(10 * time.Second):
-					if request.ReturnCallback(errors.New("Response timeout"), nil) == false {
+					if request.ReturnCallback(errors.New("response timeout"), nil) == false {
 						continue
 					}
 				}
