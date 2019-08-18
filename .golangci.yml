@@ -1,0 +1,39 @@
+linters-settings:
+  govet:
+    check-shadowing: true
+  gocyclo:
+    min-complexity: 15
+  misspell:
+    locale: US
+    ignore-words:
+      - comrads
+  lll:
+    line-length: 210 # This is mostly driven by long lines in mocks. TODO: Exclude mocks
+  goimports:
+    local-prefixes: github.com/gozwave/gozw
+  golint:
+    min-confidence: 0.8
+
+linters:
+  enable-all: true
+  disable:
+    - dupl
+    - gochecknoglobals
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - gosec
+    - interfacer
+    - maligned
+    - prealloc
+    - vetshadow
+
+#run:
+#  skip-dirs:
+#    - integration
+
+# golangci.com configuration
+# https://github.com/golangci/golangci/wiki/Configuration
+service:
+  golangci-lint-version: 1.15.x # use the fixed version to not introduce new linters unexpectedly
+

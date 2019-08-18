@@ -185,17 +185,17 @@ const (
 )
 
 var SpecificTypeNames = map[byte]map[byte]string{
-	GenericTypeAVControlPoint: map[byte]string{
+	GenericTypeAVControlPoint: {
 		SpecificTypeNotUsed:             "Unspecified",
 		SpecificTypeDoorbell:            "Doorbell",
 		SpecificTypeSatelliteReceiver:   "Satellite Receiver",
 		SpecificTypeSatelliteReceiverV2: "Satellite Receiver V2",
 	},
-	GenericTypeDisplay: map[byte]string{
+	GenericTypeDisplay: {
 		SpecificTypeNotUsed:       "Unspecified",
 		SpecificTypeSimpleDisplay: "Simple Display",
 	},
-	GenericTypeEntryControl: map[byte]string{
+	GenericTypeEntryControl: {
 		SpecificTypeNotUsed:                      "Unspecified",
 		SpecificTypeDoorLock:                     "Door Lock",
 		SpecificTypeAdvancedDoorLock:             "Advanced Door Lock",
@@ -208,7 +208,7 @@ var SpecificTypeNames = map[byte]map[byte]string{
 		SpecificTypeSecureBarrierCloseOnly:       "Secure Barrier Close Only",
 		SpecificTypeSecureLockbox:                "Secure Lockbox",
 	},
-	GenericTypeGenericController: map[byte]string{
+	GenericTypeGenericController: {
 		SpecificTypeNotUsed:                  "Unspecified",
 		SpecificTypePortableRemoteController: "Portable Remote Controller",
 		SpecificTypePortableSceneController:  "Portable Scene Controller",
@@ -216,31 +216,31 @@ var SpecificTypeNames = map[byte]map[byte]string{
 		SpecificTypeRemoteControlAv:          "Remote Control AV",
 		SpecificTypeRemoteControlSimple:      "Remote Control Simple",
 	},
-	GenericTypeMeter: map[byte]string{
+	GenericTypeMeter: {
 		SpecificTypeNotUsed:              "Unspecified",
 		SpecificTypeSimpleMeter:          "Simple Meter",
 		SpecificTypeAdvEnergyControl:     "Advanced Energy Control",
 		SpecificTypeWholeHomeMeterSimple: "Whole Home Meter Simple",
 	},
-	GenericTypeMeterPulse: map[byte]string{
+	GenericTypeMeterPulse: {
 		SpecificTypeNotUsed: "Unspecified",
 	},
-	GenericTypeNonInteroperable: map[byte]string{
+	GenericTypeNonInteroperable: {
 		SpecificTypeNotUsed: "Unspecified",
 	},
-	GenericTypeRepeaterSlave: map[byte]string{
+	GenericTypeRepeaterSlave: {
 		SpecificTypeNotUsed:       "Unspecified",
 		SpecificTypeRepeaterSlave: "Repeater Slave",
 	},
-	GenericTypeSecurityPanel: map[byte]string{
+	GenericTypeSecurityPanel: {
 		SpecificTypeNotUsed:            "Unspecified",
 		SpecificTypeZonedSecurityPanel: "Zoned Security Panel",
 	},
-	GenericTypeSemiInteroperable: map[byte]string{
+	GenericTypeSemiInteroperable: {
 		SpecificTypeNotUsed:          "Unspecified",
 		SpecificTypeEnergyProduction: "Energy Production",
 	},
-	GenericTypeSensorAlarm: map[byte]string{
+	GenericTypeSensorAlarm: {
 		SpecificTypeNotUsed:                   "Unspecified",
 		SpecificTypeAdvZensorNetAlarmSensor:   "Adv Zensor Net Alarm Sensor",
 		SpecificTypeAdvZensorNetSmokeSensor:   "Adv Zensor Net Smoke Sensor",
@@ -254,16 +254,16 @@ var SpecificTypeNames = map[byte]map[byte]string{
 		SpecificTypeZensorNetSmokeSensor:      "Zensor Net Smoke Sensor",
 		SpecificTypeAlarmSensor:               "Alarm Sensor",
 	},
-	GenericTypeSensorBinary: map[byte]string{
+	GenericTypeSensorBinary: {
 		SpecificTypeNotUsed:             "Unspecified",
 		SpecificTypeRoutingSensorBinary: "Routing Sensor Binary",
 	},
-	GenericTypeSensorMultilevel: map[byte]string{
+	GenericTypeSensorMultilevel: {
 		SpecificTypeNotUsed:                 "Unspecified",
 		SpecificTypeRoutingSensorMultilevel: "Routing Sensor Multilevel",
 		SpecificTypeChimneyFan:              "Chimney Fan",
 	},
-	GenericTypeStaticController: map[byte]string{
+	GenericTypeStaticController: {
 		SpecificTypeNotUsed:             "Unspecified",
 		SpecificTypePcController:        "PC Controller",
 		SpecificTypeSceneController:     "Scene Controller",
@@ -273,7 +273,7 @@ var SpecificTypeNames = map[byte]map[byte]string{
 		SpecificTypeTv:                  "TV",
 		SpecificTypeGateway:             "Gateway",
 	},
-	GenericTypeSwitchBinary: map[byte]string{
+	GenericTypeSwitchBinary: {
 		SpecificTypeNotUsed:            "Unspecified",
 		SpecificTypePowerSwitchBinary:  "Power Switch Binary",
 		SpecificTypeSceneSwitchBinary:  "Scene Switch Binary",
@@ -282,7 +282,7 @@ var SpecificTypeNames = map[byte]map[byte]string{
 		SpecificTypeValveOpenClose:     "Valve Open Close",
 		SpecificTypeColorTunableBinary: "Color Tunable Binary",
 	},
-	GenericTypeSwitchMultilevel: map[byte]string{
+	GenericTypeSwitchMultilevel: {
 		SpecificTypeNotUsed:                "Unspecified",
 		SpecificTypeClassAMotorControl:     "Class A Motor Control",
 		SpecificTypeClassBMotorControl:     "Class B Motor Control",
@@ -293,19 +293,19 @@ var SpecificTypeNames = map[byte]map[byte]string{
 		SpecificTypeFanSwitch:              "Fan Switch",
 		SpecificTypeColorTunableMultilevel: "Color Tunable Multilevel",
 	},
-	GenericTypeSwitchRemote: map[byte]string{
+	GenericTypeSwitchRemote: {
 		SpecificTypeNotUsed:                      "Unspecified",
 		SpecificTypeSwitchRemoteBinary:           "Switch Remote Binary",
 		SpecificTypeSwitchRemoteMultilevel:       "Switch Remote Multilevel",
 		SpecificTypeSwitchRemoteToggleBinary:     "Switch Remote Toggle Binary",
 		SpecificTypeSwitchRemoteToggleMultilevel: "Switch Remote Toggle Multilevel",
 	},
-	GenericTypeSwitchToggle: map[byte]string{
+	GenericTypeSwitchToggle: {
 		SpecificTypeNotUsed:                "Unspecified",
 		SpecificTypeSwitchToggleBinary:     "Switch Toggle Binary",
 		SpecificTypeSwitchToggleMultilevel: "Switch Toggle Multilevel",
 	},
-	GenericTypeThermostat: map[byte]string{
+	GenericTypeThermostat: {
 		SpecificTypeNotUsed:                   "Unspecified",
 		SpecificTypeSetbackScheduleThermostat: "Setback Schedule Thermostat",
 		SpecificTypeSetbackThermostat:         "Setback Thermostat",
@@ -314,34 +314,34 @@ var SpecificTypeNames = map[byte]map[byte]string{
 		SpecificTypeThermostatGeneralV2:       "Thermostat General V2",
 		SpecificTypeThermostatHeating:         "Thermostat Heating",
 	},
-	GenericTypeVentilation: map[byte]string{
+	GenericTypeVentilation: {
 		SpecificTypeNotUsed:        "Unspecified",
 		SpecificTypeResidentialHrv: "Residential HRV",
 	},
-	GenericTypeWindowCovering: map[byte]string{
+	GenericTypeWindowCovering: {
 		SpecificTypeNotUsed:              "Unspecified",
 		SpecificTypeSimpleWindowCovering: "Simple Window Covering",
 	},
-	GenericTypeZipNode: map[byte]string{
+	GenericTypeZipNode: {
 		SpecificTypeNotUsed:    "Unspecified",
 		SpecificTypeZipAdvNode: "Zip Adv Node",
 		SpecificTypeZipTunNode: "Zip Tun Node",
 	},
-	GenericTypeWallController: map[byte]string{
+	GenericTypeWallController: {
 		SpecificTypeNotUsed:             "Unspecified",
 		SpecificTypeBasicWallController: "Basic Wall Controller",
 	},
-	GenericTypeNetworkExtender: map[byte]string{
+	GenericTypeNetworkExtender: {
 		SpecificTypeNotUsed:        "Unspecified",
 		SpecificTypeSecureExtender: "Secure Extender",
 	},
-	GenericTypeAppliance: map[byte]string{
+	GenericTypeAppliance: {
 		SpecificTypeNotUsed:          "Unspecified",
 		SpecificTypeGeneralAppliance: "General Appliance",
 		SpecificTypeKitchenAppliance: "Kitchen Appliance",
 		SpecificTypeLaundryAppliance: "Laundry Appliance",
 	},
-	GenericTypeSensorNotification: map[byte]string{
+	GenericTypeSensorNotification: {
 		SpecificTypeNotUsed:            "Unspecified",
 		SpecificTypeNotificationSensor: "Notification Sensor",
 	},
