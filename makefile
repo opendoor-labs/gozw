@@ -4,7 +4,7 @@ CMDS := examples/factory_reset examples/pairing examples/send_command examples/s
 
 tools:
 	go get github.com/kevinburke/go-bindata
-	go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+	go get github.com/golangci/golangci-lint/cmd/golangci-lint
 
 generate:
 	@mkdir -p bin/examples
