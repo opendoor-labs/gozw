@@ -1,16 +1,21 @@
 .PHONY: bin
 
+CMDS := examples/factory_reset examples/pairing examples/send_command examples/subscribe gen
+
+tools:
+	go get -u github.com/kevinburke/go-bindata
+
 generate:
-	@mkdir -p bin
+	@mkdir -p bin/examples
 	cd gen && go-bindata data/ templates/
 	go build -o bin/gen ./gen
 	go generate ./...
 
-bin:
-	go build -o bin/basic ./examples/basic
-	go build -o bin/pairing ./examples/pairing
-	go build -o bin/subscribe ./examples/subscribe
-	go build -o bin/gen ./gen
+bin: $(CMDS)
+
+.PHONY: $(CMDS)
+$(CMDS): generate
+	go build -o bin/$@ ./$@
 
 graphviz:
 	cat fsm.dot | dot -Tpng -o fsm.png
