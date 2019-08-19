@@ -546,24 +546,24 @@ type bintree struct {
 }
 
 var _bintree = &bintree{nil, map[string]*bintree{
-	"data": &bintree{nil, map[string]*bintree{
-		"zwave-defs.xml": &bintree{dataZwaveDefsXml, map[string]*bintree{}},
+	"data": {nil, map[string]*bintree{
+		"zwave-defs.xml": {dataZwaveDefsXml, map[string]*bintree{}},
 	}},
-	"templates": &bintree{nil, map[string]*bintree{
-		"command-classes.tpl":             &bintree{templatesCommandClassesTpl, map[string]*bintree{}},
-		"command-struct-fields.tpl":       &bintree{templatesCommandStructFieldsTpl, map[string]*bintree{}},
-		"command.tpl":                     &bintree{templatesCommandTpl, map[string]*bintree{}},
-		"devices.tpl":                     &bintree{templatesDevicesTpl, map[string]*bintree{}},
-		"import.tpl":                      &bintree{templatesImportTpl, map[string]*bintree{}},
-		"marshal-command-param.tpl":       &bintree{templatesMarshalCommandParamTpl, map[string]*bintree{}},
-		"marshal-command-params.tpl":      &bintree{templatesMarshalCommandParamsTpl, map[string]*bintree{}},
-		"marshal-command-vg-params.tpl":   &bintree{templatesMarshalCommandVgParamsTpl, map[string]*bintree{}},
-		"marshal-variant.tpl":             &bintree{templatesMarshalVariantTpl, map[string]*bintree{}},
-		"unmarshal-command-param.tpl":     &bintree{templatesUnmarshalCommandParamTpl, map[string]*bintree{}},
-		"unmarshal-command-params.tpl":    &bintree{templatesUnmarshalCommandParamsTpl, map[string]*bintree{}},
-		"unmarshal-command-vg-params.tpl": &bintree{templatesUnmarshalCommandVgParamsTpl, map[string]*bintree{}},
-		"unmarshal-variant.tpl":           &bintree{templatesUnmarshalVariantTpl, map[string]*bintree{}},
-		"unmarshal-vg-variant.tpl":        &bintree{templatesUnmarshalVgVariantTpl, map[string]*bintree{}},
+	"templates": {nil, map[string]*bintree{
+		"command-classes.tpl":             {templatesCommandClassesTpl, map[string]*bintree{}},
+		"command-struct-fields.tpl":       {templatesCommandStructFieldsTpl, map[string]*bintree{}},
+		"command.tpl":                     {templatesCommandTpl, map[string]*bintree{}},
+		"devices.tpl":                     {templatesDevicesTpl, map[string]*bintree{}},
+		"import.tpl":                      {templatesImportTpl, map[string]*bintree{}},
+		"marshal-command-param.tpl":       {templatesMarshalCommandParamTpl, map[string]*bintree{}},
+		"marshal-command-params.tpl":      {templatesMarshalCommandParamsTpl, map[string]*bintree{}},
+		"marshal-command-vg-params.tpl":   {templatesMarshalCommandVgParamsTpl, map[string]*bintree{}},
+		"marshal-variant.tpl":             {templatesMarshalVariantTpl, map[string]*bintree{}},
+		"unmarshal-command-param.tpl":     {templatesUnmarshalCommandParamTpl, map[string]*bintree{}},
+		"unmarshal-command-params.tpl":    {templatesUnmarshalCommandParamsTpl, map[string]*bintree{}},
+		"unmarshal-command-vg-params.tpl": {templatesUnmarshalCommandVgParamsTpl, map[string]*bintree{}},
+		"unmarshal-variant.tpl":           {templatesUnmarshalVariantTpl, map[string]*bintree{}},
+		"unmarshal-vg-variant.tpl":        {templatesUnmarshalVgVariantTpl, map[string]*bintree{}},
 	}},
 }}
 

@@ -215,18 +215,18 @@ const (
 )
 
 var SpecificDeviceTypeNames map[GenericDeviceType]map[SpecificDeviceType]string = map[GenericDeviceType]map[SpecificDeviceType]string{
-	GenericTypeAvControlPoint: map[SpecificDeviceType]string{
+	GenericTypeAvControlPoint: {
 		SpecificTypeNotUsed:             "Not Used",
 		SpecificTypeDoorbell:            "Doorbell",
 		SpecificTypeSatelliteReceiver:   "Satellite Receiver",
 		SpecificTypeSatelliteReceiverV2: "Satellite Receiver V2",
 		SpecificTypeSoundSwitch:         "Sound Switch",
 	},
-	GenericTypeDisplay: map[SpecificDeviceType]string{
+	GenericTypeDisplay: {
 		SpecificTypeNotUsed:       "Not Used",
 		SpecificTypeSimpleDisplay: "Simple Display",
 	},
-	GenericTypeEntryControl: map[SpecificDeviceType]string{
+	GenericTypeEntryControl: {
 		SpecificTypeNotUsed:                      "Not Used",
 		SpecificTypeDoorLock:                     "Door Lock",
 		SpecificTypeAdvancedDoorLock:             "Advanced Door Lock",
@@ -240,7 +240,7 @@ var SpecificDeviceTypeNames map[GenericDeviceType]map[SpecificDeviceType]string 
 		SpecificTypeSecureLockbox:                "Secure Lockbox",
 		SpecificTypeSecureKeypad:                 "Secure Keypad",
 	},
-	GenericTypeGenericController: map[SpecificDeviceType]string{
+	GenericTypeGenericController: {
 		SpecificTypeNotUsed:                  "Not Used",
 		SpecificTypePortableRemoteController: "Portable Remote Controller",
 		SpecificTypePortableSceneController:  "Portable Scene Controller",
@@ -248,32 +248,32 @@ var SpecificDeviceTypeNames map[GenericDeviceType]map[SpecificDeviceType]string 
 		SpecificTypeRemoteControlAv:          "Remote Control AV",
 		SpecificTypeRemoteControlSimple:      "Remote Control Simple",
 	},
-	GenericTypeMeter: map[SpecificDeviceType]string{
+	GenericTypeMeter: {
 		SpecificTypeNotUsed:              "Not Used",
 		SpecificTypeSimpleMeter:          "Simple Meter",
 		SpecificTypeAdvEnergyControl:     "Adv Energy Control",
 		SpecificTypeWholeHomeMeterSimple: "Whole Home Meter Simple",
 	},
-	GenericTypeMeterPulse: map[SpecificDeviceType]string{
+	GenericTypeMeterPulse: {
 		SpecificTypeNotUsed: "Not Used",
 	},
-	GenericTypeNonInteroperable: map[SpecificDeviceType]string{
+	GenericTypeNonInteroperable: {
 		SpecificTypeNotUsed: "Not Used",
 	},
-	GenericTypeRepeaterSlave: map[SpecificDeviceType]string{
+	GenericTypeRepeaterSlave: {
 		SpecificTypeNotUsed:       "Not Used",
 		SpecificTypeRepeaterSlave: "Repeater Slave",
 		SpecificTypeVirtualNode:   "Virtual Node",
 	},
-	GenericTypeSecurityPanel: map[SpecificDeviceType]string{
+	GenericTypeSecurityPanel: {
 		SpecificTypeNotUsed:            "Not Used",
 		SpecificTypeZonedSecurityPanel: "Zoned Security Panel",
 	},
-	GenericTypeSemiInteroperable: map[SpecificDeviceType]string{
+	GenericTypeSemiInteroperable: {
 		SpecificTypeNotUsed:          "Not Used",
 		SpecificTypeEnergyProduction: "Energy Production",
 	},
-	GenericTypeSensorAlarm: map[SpecificDeviceType]string{
+	GenericTypeSensorAlarm: {
 		SpecificTypeNotUsed:                   "Not Used",
 		SpecificTypeAdvZensorNetAlarmSensor:   "Adv Zensor Net Alarm Sensor",
 		SpecificTypeAdvZensorNetSmokeSensor:   "Adv Zensor Net Smoke Sensor",
@@ -287,16 +287,16 @@ var SpecificDeviceTypeNames map[GenericDeviceType]map[SpecificDeviceType]string 
 		SpecificTypeZensorNetSmokeSensor:      "Zensor Net Smoke Sensor",
 		SpecificTypeAlarmSensor:               "Alarm Sensor",
 	},
-	GenericTypeSensorBinary: map[SpecificDeviceType]string{
+	GenericTypeSensorBinary: {
 		SpecificTypeNotUsed:             "Not Used",
 		SpecificTypeRoutingSensorBinary: "Routing Sensor Binary",
 	},
-	GenericTypeSensorMultilevel: map[SpecificDeviceType]string{
+	GenericTypeSensorMultilevel: {
 		SpecificTypeNotUsed:                 "Not Used",
 		SpecificTypeRoutingSensorMultilevel: "Routing Sensor Multilevel",
 		SpecificTypeChimneyFan:              "Chimney Fan",
 	},
-	GenericTypeStaticController: map[SpecificDeviceType]string{
+	GenericTypeStaticController: {
 		SpecificTypeNotUsed:             "Not Used",
 		SpecificTypePcController:        "Pc Controller",
 		SpecificTypeSceneController:     "Scene Controller",
@@ -306,7 +306,7 @@ var SpecificDeviceTypeNames map[GenericDeviceType]map[SpecificDeviceType]string 
 		SpecificTypeTv:                  "TV",
 		SpecificTypeGateway:             "Gateway",
 	},
-	GenericTypeSwitchBinary: map[SpecificDeviceType]string{
+	GenericTypeSwitchBinary: {
 		SpecificTypeNotUsed:              "Not Used",
 		SpecificTypePowerSwitchBinary:    "Power Switch Binary",
 		SpecificTypeSceneSwitchBinary:    "Scene Switch Binary",
@@ -316,7 +316,7 @@ var SpecificDeviceTypeNames map[GenericDeviceType]map[SpecificDeviceType]string 
 		SpecificTypeColorTunableBinary:   "Binary Tunable Color Light",
 		SpecificTypeIrrigationController: "Irrigation Controller",
 	},
-	GenericTypeSwitchMultilevel: map[SpecificDeviceType]string{
+	GenericTypeSwitchMultilevel: {
 		SpecificTypeNotUsed:                "Not Used",
 		SpecificTypeClassAMotorControl:     "Class A Motor Control",
 		SpecificTypeClassBMotorControl:     "Class B Motor Control",
@@ -327,19 +327,19 @@ var SpecificDeviceTypeNames map[GenericDeviceType]map[SpecificDeviceType]string 
 		SpecificTypeFanSwitch:              "Fan Switch",
 		SpecificTypeColorTunableMultilevel: "Multilevel Tunable Color Light",
 	},
-	GenericTypeSwitchRemote: map[SpecificDeviceType]string{
+	GenericTypeSwitchRemote: {
 		SpecificTypeNotUsed:                      "Not Used",
 		SpecificTypeSwitchRemoteBinary:           "Switch Remote Binary",
 		SpecificTypeSwitchRemoteMultilevel:       "Switch Remote Multilevel",
 		SpecificTypeSwitchRemoteToggleBinary:     "Switch Remote Toggle Binary",
 		SpecificTypeSwitchRemoteToggleMultilevel: "Switch Remote Toggle Multilevel",
 	},
-	GenericTypeSwitchToggle: map[SpecificDeviceType]string{
+	GenericTypeSwitchToggle: {
 		SpecificTypeNotUsed:                "Not Used",
 		SpecificTypeSwitchToggleBinary:     "Switch Toggle Binary",
 		SpecificTypeSwitchToggleMultilevel: "Switch Toggle Multilevel",
 	},
-	GenericTypeThermostat: map[SpecificDeviceType]string{
+	GenericTypeThermostat: {
 		SpecificTypeNotUsed:                   "Not Used",
 		SpecificTypeSetbackScheduleThermostat: "Setback Schedule Thermostat",
 		SpecificTypeSetbackThermostat:         "Setback Thermostat",
@@ -348,34 +348,34 @@ var SpecificDeviceTypeNames map[GenericDeviceType]map[SpecificDeviceType]string 
 		SpecificTypeThermostatGeneralV2:       "Thermostat General V2",
 		SpecificTypeThermostatHeating:         "Thermostat Heating",
 	},
-	GenericTypeVentilation: map[SpecificDeviceType]string{
+	GenericTypeVentilation: {
 		SpecificTypeNotUsed:        "Not Used",
 		SpecificTypeResidentialHrv: "Residential Hrv",
 	},
-	GenericTypeWindowCovering: map[SpecificDeviceType]string{
+	GenericTypeWindowCovering: {
 		SpecificTypeNotUsed:              "Not Used",
 		SpecificTypeSimpleWindowCovering: "Simple Window Covering",
 	},
-	GenericTypeZipNode: map[SpecificDeviceType]string{
+	GenericTypeZipNode: {
 		SpecificTypeNotUsed:    "Not Used",
 		SpecificTypeZipAdvNode: "Zip Adv Node",
 		SpecificTypeZipTunNode: "Zip Tun Node",
 	},
-	GenericTypeWallController: map[SpecificDeviceType]string{
+	GenericTypeWallController: {
 		SpecificTypeNotUsed:             "Not Used",
 		SpecificTypeBasicWallController: "Basic Wall Controller",
 	},
-	GenericTypeNetworkExtender: map[SpecificDeviceType]string{
+	GenericTypeNetworkExtender: {
 		SpecificTypeNotUsed:        "Not Used",
 		SpecificTypeSecureExtender: "Secure Extender",
 	},
-	GenericTypeAppliance: map[SpecificDeviceType]string{
+	GenericTypeAppliance: {
 		SpecificTypeNotUsed:          "Not Used",
 		SpecificTypeGeneralAppliance: "General Appliance",
 		SpecificTypeKitchenAppliance: "Kitchen Appliance",
 		SpecificTypeLaundryAppliance: "Laundry Appliance",
 	},
-	GenericTypeSensorNotification: map[SpecificDeviceType]string{
+	GenericTypeSensorNotification: {
 		SpecificTypeNotUsed:            "Not Used",
 		SpecificTypeNotificationSensor: "Notification Sensor",
 	},
