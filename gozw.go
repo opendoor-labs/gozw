@@ -305,11 +305,6 @@ func (c *Client) AddNode() (*Node, error) {
 		return nil, err
 	}
 
-	err = c.PruneNodes()
-	if err != nil {
-		return nil, err
-	}
-
 	if newNodeInfo == nil {
 		return nil, errors.New("Adding node failed")
 	}
