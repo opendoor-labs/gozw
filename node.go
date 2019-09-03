@@ -28,6 +28,14 @@ type GoZWNode interface {
 	saveToDb() error
 }
 
+type PairingProgressUpdate struct {
+	// How command classes we've heard from
+	InterviewedCommandClassCount int
+
+	// How many command classes have been reported from NIF
+	ReportedCommandClassCount int
+}
+
 type Node struct {
 	GoZWNode
 	NodeID byte
@@ -39,7 +47,8 @@ type Node struct {
 
 	Failing bool
 
-	CommandClasses cc.CommandClassSet
+	InterviewedCommandClassCount int
+	CommandClasses               cc.CommandClassSet
 
 	NetworkKeySent bool
 
@@ -240,7 +249,7 @@ func (n *Node) RequestNodeInformationFrame() error {
 
 func (n *Node) LoadCommandClassVersions() error {
 	for _, commandClass := range n.CommandClasses {
-		time.Sleep(1 * time.Second)
+		time.Sleep(100 * time.Millisecond)
 		cmd := &version.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)}
 		var err error
 
@@ -361,6 +370,7 @@ func (n *Node) receiveManufacturerInfo(mfgId, productTypeId, productId uint16) {
 
 func (n *Node) receiveCommandClassVersion(id cc.CommandClassID, version uint8) {
 	n.CommandClasses.SetVersion(id, version)
+	n.InterviewedCommandClassCount++
 
 	if n.CommandClasses.AllVersionsReceived() {
 		select {

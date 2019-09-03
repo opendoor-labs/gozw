@@ -9,6 +9,9 @@ import (
 
 	"github.com/boltdb/bolt"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
+
 	"github.com/gozwave/gozw/cc"
 	zwsec "github.com/gozwave/gozw/cc/security"
 	"github.com/gozwave/gozw/frame"
@@ -17,8 +20,6 @@ import (
 	"github.com/gozwave/gozw/serialapi"
 	"github.com/gozwave/gozw/session"
 	"github.com/gozwave/gozw/transport"
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
 )
 
 // MaxSecureInclusionDuration is the timeout for secure inclusion mode. If this
@@ -299,7 +300,7 @@ func (c *Client) FactoryReset() error {
 	return nil
 }
 
-func (c *Client) AddNode() (*Node, error) {
+func (c *Client) AddNode(progress chan PairingProgressUpdate) (*Node, error) {
 	newNodeInfo, err := c.serialAPI.AddNode()
 	if err != nil {
 		return nil, err
@@ -314,9 +315,6 @@ func (c *Client) AddNode() (*Node, error) {
 		return nil, err
 	}
 
-	node.setFromAddNodeCallback(newNodeInfo)
-	c.nodes[node.NodeID] = node
-
 	if node.IsSecure() {
 		c.l.Debug("starting secure inclusion")
 		err = c.includeSecureNode(node)
@@ -324,6 +322,33 @@ func (c *Client) AddNode() (*Node, error) {
 			return nil, err
 		}
 	}
+
+	progress <- PairingProgressUpdate{
+		InterviewedCommandClassCount: 0,
+		ReportedCommandClassCount:    len(node.CommandClasses),
+	}
+
+	c.l.Debug("reported command classes", zap.Int("len", len(newNodeInfo.CommandClasses)))
+
+
+	go func() {
+		lastReportedInterviewLength := 0
+		for {
+			currentProgress := node.InterviewedCommandClassCount
+			if currentProgress != lastReportedInterviewLength {
+				progress <- PairingProgressUpdate{
+					InterviewedCommandClassCount:currentProgress,
+					ReportedCommandClassCount:    len(node.CommandClasses),
+				}
+				lastReportedInterviewLength = currentProgress
+			}
+		}
+	}()
+
+
+	node.setFromAddNodeCallback(newNodeInfo)
+	c.nodes[node.NodeID] = node
+
 
 	node.nextQueryStage()
 
