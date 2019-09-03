@@ -264,17 +264,26 @@ func (n *Node) LoadManufacturerInfo() error {
 
 func (n *Node) nextQueryStage() {
 	if !n.QueryStageSecurity && n.IsSecure() {
-		n.LoadSupportedSecurityCommands()
+		err := n.LoadSupportedSecurityCommands()
+		if err != nil {
+			n.client.l.Error("load-supported-commands-failure", zap.Error(err))
+		}
 		return
 	}
 
 	if !n.QueryStageVersions {
-		n.LoadCommandClassVersions()
+		err := n.LoadCommandClassVersions()
+		if err != nil {
+			n.client.l.Error("load-supported-commands-failure", zap.Error(err))
+		}
 		return
 	}
 
 	if !n.QueryStageManufacturer {
-		n.LoadManufacturerInfo()
+		err := n.LoadManufacturerInfo()
+		if err != nil {
+			n.client.l.Error("load-supported-commands-failure", zap.Error(err))
+		}
 		return
 	}
 }
@@ -292,7 +301,10 @@ func (n *Node) emitNodeEvent(event cc.Command) {
 
 func (n *Node) receiveControllerUpdate(update serialapi.ControllerUpdate) {
 	n.setFromApplicationControllerUpdate(update)
-	n.saveToDb()
+	err := n.saveToDb()
+	if err != nil {
+		n.client.l.Error("load-supported-commands-failure", zap.Error(err))
+	}
 }
 
 func (n *Node) setFromAddNodeCallback(nodeInfo *serialapi.AddRemoveNodeCallback) {
@@ -305,7 +317,10 @@ func (n *Node) setFromAddNodeCallback(nodeInfo *serialapi.AddRemoveNodeCallback)
 		n.CommandClasses.Add(cc.CommandClassID(cmd))
 	}
 
-	n.saveToDb()
+	err := n.saveToDb()
+	if err != nil {
+		n.client.l.Error("save-to-db-failed", zap.Error(err))
+	}
 }
 
 func (n *Node) setFromApplicationControllerUpdate(nodeInfo serialapi.ControllerUpdate) {
@@ -317,7 +332,10 @@ func (n *Node) setFromApplicationControllerUpdate(nodeInfo serialapi.ControllerU
 		n.CommandClasses.Add(cc.CommandClassID(cmd))
 	}
 
-	n.saveToDb()
+	err := n.saveToDb()
+	if err != nil {
+		n.client.l.Error("save-to-db-failed", zap.Error(err))
+	}
 }
 
 func (n *Node) setFromNodeProtocolInfo(nodeInfo *serialapi.NodeProtocolInfo) {
@@ -326,7 +344,10 @@ func (n *Node) setFromNodeProtocolInfo(nodeInfo *serialapi.NodeProtocolInfo) {
 	n.GenericDeviceClass = nodeInfo.GenericDeviceClass
 	n.SpecificDeviceClass = nodeInfo.SpecificDeviceClass
 
-	n.saveToDb()
+	err := n.saveToDb()
+	if err != nil {
+		n.client.l.Error("save-to-db-failed", zap.Error(err))
+	}
 }
 
 func (n *Node) receiveSecurityCommandsSupportedReport(cmd security.CommandsSupportedReport) {
@@ -340,7 +361,10 @@ func (n *Node) receiveSecurityCommandsSupportedReport(cmd security.CommandsSuppo
 	}
 
 	n.QueryStageSecurity = true
-	n.saveToDb()
+	err := n.saveToDb()
+	if err != nil {
+		n.client.l.Error("save-to-db-failed", zap.Error(err))
+	}
 	n.nextQueryStage()
 }
 
@@ -355,7 +379,10 @@ func (n *Node) receiveManufacturerInfo(mfgId, productTypeId, productId uint16) {
 	}
 
 	n.QueryStageManufacturer = true
-	n.saveToDb()
+	err := n.saveToDb()
+	if err != nil {
+		n.client.l.Error("save-to-db-failed", zap.Error(err))
+	}
 	n.nextQueryStage()
 }
 
@@ -372,7 +399,10 @@ func (n *Node) receiveCommandClassVersion(id cc.CommandClassID, version uint8) {
 		defer n.nextQueryStage()
 	}
 
-	n.saveToDb()
+	err := n.saveToDb()
+	if err != nil {
+		n.client.l.Error("save-to-db-failed", zap.Error(err))
+	}
 }
 
 func (n *Node) receiveApplicationCommand(cmd serialapi.ApplicationCommand) {
@@ -426,13 +456,19 @@ func (n *Node) receiveApplicationCommand(cmd serialapi.ApplicationCommand) {
 		spew.Dump(command.(*version.CommandClassReport))
 		report := command.(*version.CommandClassReport)
 		n.receiveCommandClassVersion(cc.CommandClassID(report.RequestedCommandClass), report.CommandClassVersion)
-		n.saveToDb()
+		err := n.saveToDb()
+		if err != nil {
+			n.client.l.Error("save-to-db-failed", zap.Error(err))
+		}
 
 	case *versionv2.CommandClassReport:
 		spew.Dump(command.(*versionv2.CommandClassReport))
 		report := command.(*versionv2.CommandClassReport)
 		n.receiveCommandClassVersion(cc.CommandClassID(report.RequestedCommandClass), report.CommandClassVersion)
-		n.saveToDb()
+		err := n.saveToDb()
+		if err != nil {
+			n.client.l.Error("save-to-db-failed", zap.Error(err))
+		}
 
 		// case alarm.Report:
 		// 	spew.Dump(command.(alarm.Report))
