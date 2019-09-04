@@ -82,7 +82,10 @@ func NewNode(client *Client, nodeID byte) (*Node, error) {
 			return nil, initErr
 		}
 
-		node.saveToDb()
+		err = node.saveToDb()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return node, nil
