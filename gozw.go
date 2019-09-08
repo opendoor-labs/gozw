@@ -114,9 +114,9 @@ func (c *Client) SetLogger(logger *zap.Logger) {
 func (c *Client) initDb(dbName string) (err error) {
 	c.db, err = bolt.Open(dbName, 0600, &bolt.Options{})
 	if err != nil {
-		return
+		return err
 	}
-	c.db.Update(func(tx *bolt.Tx) error {
+	err = c.db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte("nodes"))
 		if err != nil {
 			return err
@@ -133,7 +133,7 @@ func (c *Client) initDb(dbName string) (err error) {
 }
 
 func (c *Client) clearDb() (err error) {
-	c.db.Update(func(tx *bolt.Tx) error {
+	return c.db.Update(func(tx *bolt.Tx) error {
 		nodeDeleteErr := tx.DeleteBucket([]byte("nodes"))
 		if nodeDeleteErr != nil {
 			return nodeDeleteErr
@@ -155,8 +155,6 @@ func (c *Client) clearDb() (err error) {
 
 		return nil
 	})
-
-	return err
 }
 
 //  NewLogger builds a  new logger.
@@ -334,7 +332,10 @@ func (c *Client) AddNode() (*Node, error) {
 		c.l.Warn("node query timeout", zap.String("node", fmt.Sprint(node.NodeID)))
 	}
 
-	node.AddAssociation(1, 1)
+	err = node.AddAssociation(1, 1)
+	if err != nil {
+		return nil, err
+	}
 
 	return node, nil
 }
@@ -371,12 +372,15 @@ func (c *Client) handleApplicationCommands() {
 				c.interceptSecurityCommandClass(cmd)
 
 			default:
-				if node, err := c.Node(cmd.SrcNodeID); err == nil {
-					go node.receiveApplicationCommand(cmd)
-				} else {
-					c.l.Warn("Received command for unknown node", zap.String("node", fmt.Sprint(cmd.SrcNodeID)))
+				node, err := c.Node(cmd.SrcNodeID)
+				if err != nil {
+					c.l.Warn("Received command for unknown node",
+						zap.Error(err),
+						zap.String("node", fmt.Sprint(cmd.SrcNodeID)),
+					)
+					continue
 				}
-
+				go node.receiveApplicationCommand(cmd)
 			}
 		case <-c.ctx.Done():
 			c.l.Info("stopping application commands handler")
@@ -521,7 +525,11 @@ func (c *Client) sendDataSecure(dstNode byte, message encoding.BinaryMarshaler, 
 
 func (c *Client) includeSecureNode(node *Node) error {
 	c.secureInclusionStep[node.NodeID] = make(chan error)
-	c.SendData(node.NodeID, &zwsec.SchemeGet{})
+	err := c.SendData(node.NodeID, &zwsec.SchemeGet{})
+	if err != nil {
+		c.l.Warn("inclusion-mode-scheme-get-failure", zap.Error(err))
+		return err
+	}
 
 	defer close(c.secureInclusionStep[node.NodeID])
 	defer delete(c.secureInclusionStep, node.NodeID)
@@ -540,11 +548,15 @@ func (c *Client) includeSecureNode(node *Node) error {
 	c.l.Info("sending network key")
 	node.NetworkKeySent = true
 
-	c.sendDataSecure(
+	err = c.sendDataSecure(
 		node.NodeID,
 		&zwsec.NetworkKeySet{NetworkKeyByte: c.networkKey},
 		true,
 	)
+	if err != nil {
+		c.l.Warn("inclusion-mode-network-key-set-failure", zap.Error(err))
+		return err
+	}
 
 	select {
 	case err := <-c.secureInclusionStep[node.NodeID]:
@@ -618,7 +630,10 @@ func (c *Client) interceptSecurityCommandClass(cmd serialapi.ApplicationCommand)
 		}
 
 		reply := &zwsec.NonceReport{NonceByte: nonce}
-		c.SendData(cmd.SrcNodeID, reply)
+		err = c.SendData(cmd.SrcNodeID, reply)
+		if err != nil {
+			c.l.Error("fetch-nonce-failure", zap.Error(err))
+		}
 
 	case *zwsec.NonceReport:
 		c.l.Info("nonce report", zap.String("node", fmt.Sprint(cmd.SrcNodeID)))

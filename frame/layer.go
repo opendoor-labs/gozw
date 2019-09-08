@@ -75,12 +75,18 @@ func (l *Layer) bgWork() {
 			l.l.Debug("parser output received")
 
 			if frameIn.status == ParseOk {
-				l.sendAck()
+				err := l.sendAck()
+				if err != nil {
+					l.l.Error("send ack failed", zap.Error(err))
+				}
 				l.l.Debug("received frame successfully, writing output")
 				l.frameOutput <- frameIn.frame
 			} else if frameIn.status == ParseNotOk {
 				l.l.Warn("received frame, parse not ok")
-				l.sendNak()
+				err := l.sendNak()
+				if err != nil {
+					l.l.Error("send-nak-failed", zap.Error(err))
+				}
 			} else {
 				// @todo handle timeout(?)
 			}
@@ -97,7 +103,10 @@ func (l *Layer) bgWork() {
 			// this method never returns an error, so ignore it
 			buf, _ := frameToWrite.MarshalBinary()
 
-			l.writeToTransport(buf)
+			_, err := l.writeToTransport(buf)
+			if err != nil {
+				l.l.Error("write-transport-failed", zap.Error(err))
+			}
 			// TODO: this needs to time out
 
 			// <-l.acks
