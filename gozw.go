@@ -300,7 +300,13 @@ func (c *Client) FactoryReset() error {
 	return nil
 }
 
-func (c *Client) AddNode(progress chan PairingProgressUpdate) (*Node, error) {
+func (c *Client) AddNode() (*Node, error) {
+	prog := make(chan PairingProgressUpdate)
+	ctx, _ := context.WithTimeout(context.Background(), 3*time.Minute) // Times out after 3 minutes
+	return c.AddNodeWithProgress(ctx, prog)
+}
+
+func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingProgressUpdate) (*Node, error) {
 	newNodeInfo, err := c.serialAPI.AddNode()
 	if err != nil {
 		return nil, err
@@ -323,32 +329,44 @@ func (c *Client) AddNode(progress chan PairingProgressUpdate) (*Node, error) {
 		}
 	}
 
-	progress <- PairingProgressUpdate{
+	select {
+	case progress <- PairingProgressUpdate{
 		InterviewedCommandClassCount: 0,
 		ReportedCommandClassCount:    len(node.CommandClasses),
+	}:
+	case <-ctx.Done():
+		c.l.Warn("pairing progress update", zap.Error(ctx.Err()))
+		// Don't prevent pairing, just fail to provide status
 	}
 
 	c.l.Debug("reported command classes", zap.Int("len", len(newNodeInfo.CommandClasses)))
-
 
 	go func() {
 		lastReportedInterviewLength := 0
 		for {
 			currentProgress := node.InterviewedCommandClassCount
-			if currentProgress != lastReportedInterviewLength {
-				progress <- PairingProgressUpdate{
-					InterviewedCommandClassCount:currentProgress,
-					ReportedCommandClassCount:    len(node.CommandClasses),
-				}
+
+			if currentProgress == lastReportedInterviewLength {
+				continue
+			}
+
+			update := PairingProgressUpdate{
+				InterviewedCommandClassCount: currentProgress,
+				ReportedCommandClassCount:    len(node.CommandClasses),
+			}
+
+			select {
+			case progress <- update:
 				lastReportedInterviewLength = currentProgress
+				continue
+			case <-ctx.Done():
+				return
 			}
 		}
 	}()
 
-
 	node.setFromAddNodeCallback(newNodeInfo)
 	c.nodes[node.NodeID] = node
-
 
 	node.nextQueryStage()
 
