@@ -37,7 +37,7 @@ func TestGoodIncomingFrameResultsInAck(t *testing.T) {
 	frame := <-frameLayer.GetOutputChannel()
 
 	// Ensure the other goroutines have time to do their thing
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(time.Millisecond)
 
 	// Ensure ack was written back to the transport
 	assert.EqualValues(t, []byte{HeaderAck}, buf.BytesWritten.Bytes())

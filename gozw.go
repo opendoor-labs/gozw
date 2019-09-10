@@ -9,6 +9,9 @@ import (
 
 	"github.com/boltdb/bolt"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
+
 	"github.com/gozwave/gozw/cc"
 	zwsec "github.com/gozwave/gozw/cc/security"
 	"github.com/gozwave/gozw/frame"
@@ -17,8 +20,6 @@ import (
 	"github.com/gozwave/gozw/serialapi"
 	"github.com/gozwave/gozw/session"
 	"github.com/gozwave/gozw/transport"
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
 )
 
 // MaxSecureInclusionDuration is the timeout for secure inclusion mode. If this
@@ -298,6 +299,12 @@ func (c *Client) FactoryReset() error {
 }
 
 func (c *Client) AddNode() (*Node, error) {
+	prog := make(chan PairingProgressUpdate, 1)
+	ctx, _ := context.WithTimeout(context.Background(), 3*time.Minute) // Times out after 3 minutes
+	return c.AddNodeWithProgress(ctx, prog)
+}
+
+func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingProgressUpdate) (*Node, error) {
 	newNodeInfo, err := c.serialAPI.AddNode()
 	if err != nil {
 		return nil, err
@@ -312,9 +319,6 @@ func (c *Client) AddNode() (*Node, error) {
 		return nil, err
 	}
 
-	node.setFromAddNodeCallback(newNodeInfo)
-	c.nodes[node.NodeID] = node
-
 	if node.IsSecure() {
 		c.l.Debug("starting secure inclusion")
 		err = c.includeSecureNode(node)
@@ -323,12 +327,51 @@ func (c *Client) AddNode() (*Node, error) {
 		}
 	}
 
+	select {
+	case progress <- PairingProgressUpdate{
+		InterviewedCommandClassCount: 0,
+		ReportedCommandClassCount:    len(node.CommandClasses),
+	}:
+	case <-ctx.Done():
+		c.l.Warn("pairing progress update", zap.Error(ctx.Err()))
+		// Don't prevent pairing, just fail to provide status
+	}
+
+	c.l.Debug("reported command classes", zap.Int("len", len(newNodeInfo.CommandClasses)))
+
+	go func() {
+		lastReportedInterviewLength := 0
+		for {
+			currentProgress := node.InterviewedCommandClassCount
+
+			if currentProgress == lastReportedInterviewLength {
+				continue
+			}
+
+			update := PairingProgressUpdate{
+				InterviewedCommandClassCount: currentProgress,
+				ReportedCommandClassCount:    len(node.CommandClasses),
+			}
+
+			select {
+			case progress <- update:
+				lastReportedInterviewLength = currentProgress
+				continue
+			case <-ctx.Done():
+				return
+			}
+		}
+	}()
+
+	node.setFromAddNodeCallback(newNodeInfo)
+	c.nodes[node.NodeID] = node
+
 	node.nextQueryStage()
 
 	select {
 	case <-node.queryStageVersionsComplete:
 		c.l.Info("node queries complete")
-	case <-time.After(time.Second * 30):
+	case <-ctx.Done():
 		c.l.Warn("node query timeout", zap.String("node", fmt.Sprint(node.NodeID)))
 	}
 
