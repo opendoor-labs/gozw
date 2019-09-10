@@ -373,7 +373,7 @@ func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingP
 	select {
 	case <-node.queryStageVersionsComplete:
 		c.l.Info("node queries complete")
-	case <-time.After(time.Second * 30):
+	case <-ctx.Done():
 		c.l.Warn("node query timeout", zap.String("node", fmt.Sprint(node.NodeID)))
 	}
 
