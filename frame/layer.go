@@ -61,7 +61,12 @@ func NewFrameLayer(ctx context.Context, transportLayer io.ReadWriter, logger *za
 	}
 
 	go frameLayer.bgWork()
-	go frameLayer.bgRead()
+	go func() {
+		err := frameLayer.bgRead()
+		if err != nil {
+			logger.Fatal("background read job failed", zap.Error(err))
+		}
+	}()
 
 	return &frameLayer, nil
 
@@ -134,17 +139,12 @@ func (l *Layer) GetOutputChannel() <-chan Frame {
 	return l.frameOutput
 }
 
-func (l *Layer) bgRead() {
+func (l *Layer) bgRead() error {
 	for {
 		byt, err := l.transportLayer.(io.ByteReader).ReadByte()
-		if err == io.EOF {
-			// TODO: handle EOF
-			return
-		} else if err != nil {
-			// TODO: handle more gracefully
-			l.l.Fatal("error reading from transport", zap.String("err", err.Error()))
+		if err != nil {
+			return err
 		}
-
 		l.parserInput <- byt
 	}
 }
