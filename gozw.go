@@ -319,6 +319,9 @@ func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingP
 		return nil, err
 	}
 
+	node.setFromAddNodeCallback(newNodeInfo)
+	c.nodes[node.NodeID] = node
+
 	if node.IsSecure() {
 		c.l.Debug("starting secure inclusion")
 		err = c.includeSecureNode(node)
@@ -362,9 +365,6 @@ func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingP
 			}
 		}
 	}()
-
-	node.setFromAddNodeCallback(newNodeInfo)
-	c.nodes[node.NodeID] = node
 
 	node.nextQueryStage()
 

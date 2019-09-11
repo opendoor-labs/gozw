@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gozwave/gozw"
@@ -12,6 +14,8 @@ import (
 var networkKey = []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 
 func main() {
+	ctx, _ := context.WithTimeout(context.Background(), time.Minute*2)
+
 	devicePath := "/dev/ttyACM0"
 	if p := os.Getenv("GOZW_DEVICE_PATH"); p != "" {
 		devicePath = p
@@ -38,7 +42,21 @@ func main() {
 	}
 
 	fmt.Println("adding node, put device in pairing mode")
-	node, err := client.AddNode()
+
+	progressChan := make(chan gozw.PairingProgressUpdate)
+
+	go func() {
+		for {
+			select {
+			case newProgress := <-progressChan:
+				fmt.Printf("pairing progress update: %d/%d", newProgress.InterviewedCommandClassCount, newProgress.ReportedCommandClassCount)
+			case <-ctx.Done():
+				fmt.Println("pairing failed", ctx.Err())
+			}
+		}
+	}()
+
+	node, err := client.AddNodeWithProgress(ctx, progressChan)
 	if err != nil {
 		log.Fatalf("failed to add node: %v", err)
 	}
