@@ -40,8 +40,8 @@
     {{if not .IsOptional}}
     if len(payload) <= i {
       return errors.New("slice index out of bounds")
-        {{end}}}
-
+    }
+    {{end}}
 
     cmd.{{ToGoName .Name}} = binary.BigEndian.Uint16(payload[i:i+2])
     i += 2
@@ -52,6 +52,7 @@
       return nil
     }
   {{else}}
+  
 {{ template "exists" .}}
     {{if .IsNotReserved}}
       cmd.{{ToGoName .Name}} = payload[i]
