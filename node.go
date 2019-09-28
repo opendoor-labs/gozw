@@ -256,7 +256,7 @@ func (n *Node) LoadCommandClassVersions() error {
 		cmd := &version.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)}
 		var err error
 
-		if !commandClass.Secure {
+		if !n.IsSecure() {
 			err = n.client.SendData(n.NodeID, cmd)
 		} else {
 			err = n.client.SendDataSecure(n.NodeID, cmd)
