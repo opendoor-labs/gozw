@@ -93,11 +93,9 @@ func (l *Layer) bgWork() {
 					l.l.Error("send-nak-failed", zap.Error(err))
 				}
 			} else if frameIn.status == ParseTimeout {
+				// Does NOT transmit a ACK or NAK
+				// Relevant reference believed to be INS12350-14 § 6.2.1
 				l.l.Warn("receive frame timeout")
-				err := l.sendNak()
-				if err != nil {
-					l.l.Error("send-nak-failed", zap.Error(err))
-				}
 			}
 
 		case <-l.acks:
