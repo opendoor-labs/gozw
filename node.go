@@ -258,7 +258,6 @@ func (n *Node) LoadCommandClassVersions() error {
 		interviewTimeout := timeoutSlow
 
 		var err error
-		versionCCVersion := n.CommandClasses.GetVersion(cc.Version)
 		switch n.CommandClasses.GetVersion(cc.Version) {
 		case 0x02:
 			err = n.SendCommand(&versionv2.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)})
