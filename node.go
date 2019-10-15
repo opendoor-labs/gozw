@@ -257,17 +257,29 @@ func (n *Node) LoadCommandClassVersions() error {
 	for _, commandClass := range n.CommandClasses {
 		interviewTimeout := timeoutSlow
 
-		var err error
+		var cmd cc.Command
 		switch n.CommandClasses.GetVersion(cc.Version) {
 		case 0x02:
-			err = n.SendCommand(&versionv2.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)})
+			cmd = &versionv2.CommandClassGet{
+				RequestedCommandClass: byte(commandClass.CommandClass),
+			}
 			interviewTimeout = timeoutFast
 		case 0x03:
-			err = n.SendCommand(&versionv3.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)})
+			cmd = &versionv3.CommandClassGet{
+				RequestedCommandClass: byte(commandClass.CommandClass),
+			}
 		default:
-			err = n.SendCommand(&version.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)})
+			cmd = &version.CommandClassGet{
+				RequestedCommandClass: byte(commandClass.CommandClass),
+			}
 		}
 
+		var err error
+		if n.IsSecure() {
+			err = n.client.SendDataSecure(n.NodeID, cmd)
+		} else {
+			err = n.client.SendData(n.NodeID, cmd)
+		}
 		if err != nil {
 			return err
 		}
