@@ -104,7 +104,7 @@ func NewNode(client *Client, nodeID byte) (*Node, error) {
 func (n *Node) loadFromDb() error {
 	var data []byte
 	err := n.client.db.View(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte("nodes"))
+		bucket := tx.Bucket([]byte(bucketNameNodes))
 		data = bucket.Get([]byte{n.NodeID})
 
 		if len(data) == 0 {
@@ -154,7 +154,7 @@ func (n *Node) initialize() error {
 
 func (n *Node) removeFromDb() error {
 	return n.client.db.Update(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte("nodes"))
+		bucket := tx.Bucket([]byte(bucketNameNodes))
 		err := bucket.Delete([]byte{n.NodeID})
 		return err
 	})
@@ -167,7 +167,7 @@ func (n *Node) saveToDb() error {
 	}
 
 	return n.client.db.Update(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte("nodes"))
+		bucket := tx.Bucket([]byte(bucketNameNodes))
 		return bucket.Put([]byte{n.NodeID}, data)
 	})
 }

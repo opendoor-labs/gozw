@@ -37,6 +37,11 @@ const (
 	SecurePayloadMaxSizeNoRoute   = 34
 )
 
+const (
+	bucketNameNodes      = "nodes"
+	bucketNameController = "controller"
+)
+
 type Client struct {
 	Controller Controller
 
@@ -118,12 +123,12 @@ func (c *Client) initDb(dbName string) (err error) {
 		return err
 	}
 	err = c.db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists([]byte("nodes"))
+		_, err := tx.CreateBucketIfNotExists([]byte(bucketNameNodes))
 		if err != nil {
 			return err
 		}
 
-		_, err = tx.CreateBucketIfNotExists([]byte("controller"))
+		_, err = tx.CreateBucketIfNotExists([]byte(bucketNameController))
 		if err != nil {
 			return err
 		}
@@ -135,21 +140,21 @@ func (c *Client) initDb(dbName string) (err error) {
 
 func (c *Client) clearDb() (err error) {
 	return c.db.Update(func(tx *bolt.Tx) error {
-		nodeDeleteErr := tx.DeleteBucket([]byte("nodes"))
+		nodeDeleteErr := tx.DeleteBucket([]byte(bucketNameNodes))
 		if nodeDeleteErr != nil {
 			return nodeDeleteErr
 		}
 
-		_, err := tx.CreateBucketIfNotExists([]byte("nodes"))
+		_, err := tx.CreateBucketIfNotExists([]byte(bucketNameNodes))
 		if err != nil {
 			return err
 		}
 
-		controllerDeleteErr := tx.DeleteBucket([]byte("controller"))
+		controllerDeleteErr := tx.DeleteBucket([]byte(bucketNameController))
 		if controllerDeleteErr != nil {
 			return controllerDeleteErr
 		}
-		_, err = tx.CreateBucketIfNotExists([]byte("controller"))
+		_, err = tx.CreateBucketIfNotExists([]byte(bucketNameController))
 		if err != nil {
 			return err
 		}
@@ -176,6 +181,7 @@ func NewLogger() (*zap.Logger, error) {
 	if err := json.Unmarshal(rawJSON, &cfg); err != nil {
 		return nil, errors.Wrap(err, "unmarshal config")
 	}
+
 	logger, err := cfg.Build()
 	if err != nil {
 		return nil, errors.Wrap(err, "build logger")
