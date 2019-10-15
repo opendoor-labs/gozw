@@ -92,8 +92,12 @@ func (l *Layer) bgWork() {
 				if err != nil {
 					l.l.Error("send-nak-failed", zap.Error(err))
 				}
-			} else {
-				// @todo handle timeout(?)
+			} else if frameIn.status == ParseTimeout {
+				l.l.Warn("receive frame timeout")
+				err := l.sendNak()
+				if err != nil {
+					l.l.Error("send-nak-failed", zap.Error(err))
+				}
 			}
 
 		case <-l.acks:
