@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	"log"
 	"os"
 	"time"
@@ -12,6 +14,54 @@ import (
 )
 
 var networkKey = []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+
+func unpair(ctx context.Context, client *gozw.Client) {
+
+	fmt.Println("removing node, put device in unpairing mode")
+	if _, err := client.RemoveNode(); err != nil {
+		log.Fatalf("failed to remove node: %v", err)
+	}
+
+}
+
+func pair(ctx context.Context, client *gozw.Client) *gozw.Node {
+
+	fmt.Println("adding node, put device in pairing mode")
+
+	node, err := client.AddNode()
+	if err != nil {
+		log.Fatalf("failed to add node: %v", err)
+	}
+
+	return node
+}
+
+func pairAsync(ctx context.Context, client *gozw.Client) *gozw.Node {
+
+	fmt.Println("adding node, put device in pairing mode")
+
+	progressChan := make(chan gozw.PairingProgressUpdate)
+
+	go func() {
+		for {
+			select {
+			case newProgress := <-progressChan:
+				fmt.Printf("pairing progress update: %d/%d", newProgress.InterviewedCommandClassCount, newProgress.ReportedCommandClassCount)
+			case <-ctx.Done():
+				fmt.Println("pairing failed", ctx.Err())
+				return
+			}
+		}
+	}()
+
+	//node, err := client.AddNodeWithProgress(ctx, progressChan)
+	node, err := client.AddNode()
+	if err != nil {
+		log.Fatalf("failed to add node: %v", err)
+	}
+
+	return node
+}
 
 func main() {
 	ctx, _ := context.WithTimeout(context.Background(), time.Minute*2)
@@ -29,6 +79,10 @@ func main() {
 			log.Fatal(err)
 		}
 	}()
+	atom := zap.NewAtomicLevel()
+	encoderCfg := zap.NewProductionEncoderConfig()
+	encoderCfg.TimeKey = ""
+	client.SetLogger(zap.New(zapcore.NewCore(zapcore.NewJSONEncoder(encoderCfg), zapcore.Lock(os.Stdout), atom)))
 
 	spew.Dump(client.Controller)
 
@@ -36,30 +90,26 @@ func main() {
 		fmt.Println(node.String())
 	}
 
-	fmt.Println("removing node, put device in unpairing mode")
-	if _, err := client.RemoveNode(); err != nil {
-		log.Fatalf("failed to remove node: %v", err)
-	}
+	for i := 0; i < 10; i++ {
+		log.Println("starting unpair")
+		unpair(ctx, client)
 
-	fmt.Println("adding node, put device in pairing mode")
-
-	progressChan := make(chan gozw.PairingProgressUpdate)
-
-	go func() {
-		for {
-			select {
-			case newProgress := <-progressChan:
-				fmt.Printf("pairing progress update: %d/%d", newProgress.InterviewedCommandClassCount, newProgress.ReportedCommandClassCount)
-			case <-ctx.Done():
-				fmt.Println("pairing failed", ctx.Err())
-			}
+		log.Println("Unpair complete - starting pairing in")
+		for i := 3; i > 0; i-- {
+			log.Printf("%d", i)
+			time.Sleep(time.Second)
 		}
-	}()
 
-	node, err := client.AddNodeWithProgress(ctx, progressChan)
-	if err != nil {
-		log.Fatalf("failed to add node: %v", err)
+		node := pair(ctx, client)
+		if node == nil {
+			log.Fatal("didn't get a new node (try 1/2)")
+		}
+
+		fmt.Println(node.String())
+		log.Println("Pair complete")
+		for i := 3; i > 0; i-- {
+			log.Printf("%d", i)
+			time.Sleep(time.Second)
+		}
 	}
-
-	fmt.Println(node.String())
 }

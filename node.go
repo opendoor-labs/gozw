@@ -14,6 +14,7 @@ import (
 	"github.com/gozwave/gozw/cc/security"
 	"github.com/gozwave/gozw/cc/version"
 	versionv2 "github.com/gozwave/gozw/cc/version-v2"
+	versionv3 "github.com/gozwave/gozw/cc/version-v3"
 	"github.com/gozwave/gozw/protocol"
 	"github.com/gozwave/gozw/serialapi"
 	"github.com/gozwave/gozw/util"
@@ -251,20 +252,28 @@ func (n *Node) RequestNodeInformationFrame() error {
 }
 
 func (n *Node) LoadCommandClassVersions() error {
+	timeoutSlow := 1 * time.Second
+	timeoutFast := 50 * time.Millisecond
 	for _, commandClass := range n.CommandClasses {
-		time.Sleep(100 * time.Millisecond)
-		cmd := &version.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)}
-		var err error
+		interviewTimeout := timeoutSlow
 
-		if !n.IsSecure() {
-			err = n.client.SendData(n.NodeID, cmd)
-		} else {
-			err = n.client.SendDataSecure(n.NodeID, cmd)
+		var err error
+		versionCCVersion := n.CommandClasses.GetVersion(cc.Version)
+		switch n.CommandClasses.GetVersion(cc.Version) {
+		case 0x02:
+			err = n.SendCommand(&versionv2.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)})
+			interviewTimeout = timeoutFast
+		case 0x03:
+			err = n.SendCommand(&versionv3.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)})
+		default:
+			err = n.SendCommand(&version.CommandClassGet{RequestedCommandClass: byte(commandClass.CommandClass)})
 		}
 
 		if err != nil {
 			return err
 		}
+
+		time.Sleep(interviewTimeout)
 	}
 
 	return nil
