@@ -296,7 +296,7 @@ func isVersionCommandClassID(id cc.CommandClassID) bool {
 }
 
 func isSecurityCommandClassID(id cc.CommandClassID) bool {
-	// TODO(zacatac): These are differen command class IDs.
+	// TODO(zacatac): These are different command class IDs.
 	// Need to refer to documentation on Security2 command class.
 	//
 	// It's possible that newer devices which support
