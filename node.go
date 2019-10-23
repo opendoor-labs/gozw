@@ -284,29 +284,8 @@ func commandClassesInOrderToInterview(set cc.CommandClassSet) []cc.CommandClassI
 	}
 
 	secure := set.ListBySecureStatus(true)
-	fmt.Println("insecure")
-	for i, ccid := range insecure {
-		fmt.Printf("idx: %d: %s\n", i, ccid)
-	}
-	fmt.Println("secure")
-	for i, ccid := range secure {
-		fmt.Printf("idx: %d: %s\n", i, ccid)
-	}
-
 	return append(insecure, secure...)
-	// inOrder := make([]*cc.CommandClassSupport, 0, len(set))
-	// for _, ccPtr := range set {
-	// 	if ccPtr == nil {
-	// 		continue
-	// 	}
-	// 	commandc := *ccPtr
-	// 	if isVersionCommandClassID(commandc.CommandClass) {
-	// 		inOrder = append([]*cc.CommandClassSupport{&commandc}, inOrder...)
-	// 		continue
-	// 	}
-	// 	inOrder = append(inOrder)
-	// }
-	// return inOrder
+
 }
 
 func isVersionCommandClassID(id cc.CommandClassID) bool {
