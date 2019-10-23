@@ -15,6 +15,7 @@ type ILayer interface {
 	ControllerCommands() chan ApplicationCommand
 	AddNode() (*AddRemoveNodeCallback, error)
 	RemoveNode() (*AddRemoveNodeCallback, error)
+	SetControllerTimeouts() (*ControllerTimeouts, error)
 	GetCapabilities() (*Capabilities, error)
 	GetVersion() (version *Version, err error)
 	MemoryGetID() (homeID uint32, nodeID byte, err error)

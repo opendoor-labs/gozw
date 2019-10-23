@@ -244,6 +244,17 @@ func (c *Client) initZWave() error {
 		return err
 	}
 
+	// Set controller's timeouts to chip defaults (ACK = 1500ms, byte = 150)
+	// This is important as the controller's timeouts may have been altered by another Z-Wave driver
+	params, err := c.serialAPI.SetControllerTimeouts()
+	if err != nil {
+		return err
+	}
+	c.l.Debug("controller timeouts",
+		zap.String("AckTimeout", fmt.Sprintf("%02x", params.AckTimeout)),
+		zap.String("ByteTimeout", fmt.Sprintf("%02x", params.ByteTimeout)),
+	)
+
 	serialAPICapabilities, err := c.serialAPI.GetCapabilities()
 	if err != nil {
 		return err
