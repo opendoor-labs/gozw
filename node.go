@@ -38,7 +38,6 @@ type PairingProgressUpdate struct {
 }
 
 type Node struct {
-	GoZWNode
 	NodeID byte
 
 	Capability          byte

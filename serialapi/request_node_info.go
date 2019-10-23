@@ -2,13 +2,12 @@ package serialapi
 
 import (
 	"errors"
-
-	"github.com/davecgh/go-spew/spew"
-	"go.uber.org/zap"
+	"fmt"
 
 	"github.com/gozwave/gozw/frame"
 	"github.com/gozwave/gozw/protocol"
 	"github.com/gozwave/gozw/session"
+	"github.com/davecgh/go-spew/spew"
 )
 
 // RequestNodeInfo will request info for a node.
@@ -23,9 +22,7 @@ func (s *Layer) RequestNodeInfo(nodeID byte) (*NodeInfoFrame, error) {
 		HasReturn:  true,
 		ReturnCallback: func(err error, ret *frame.Frame) bool {
 			done <- ret
-			if err != nil {
-				s.l.Error("Request Node Failed:", zap.Error(err))
-			}
+			fmt.Println(err)
 			return false
 		},
 	}

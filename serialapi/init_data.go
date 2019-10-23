@@ -9,15 +9,7 @@ import (
 )
 
 // InitAppData contains data to initialize application
-type AppData interface {
-	GetAPIType() string
-	TimerFunctionsSupported() bool
-	IsPrimaryController() bool
-	GetNodeIDs() []byte
-}
-
 type InitAppData struct {
-	AppData
 	CommandID    byte
 	Version      byte
 	Capabilities byte
@@ -77,12 +69,20 @@ func (n *InitAppData) GetAPIType() string {
 
 // TimerFunctionsSupported returns whether timer functions are supported.
 func (n *InitAppData) TimerFunctionsSupported() bool {
-	return n.CommandID&0x40 == 0x40
+	if n.CommandID&0x40 == 0x40 {
+		return true
+	}
+
+	return false
 }
 
 // IsPrimaryController returns if this is the primary controller.
 func (n *InitAppData) IsPrimaryController() bool {
-	return !(n.CommandID&0x20 == 0x20)
+	if n.CommandID&0x20 == 0x20 {
+		return false
+	}
+
+	return true
 }
 
 // GetNodeIDs will return all node ids
