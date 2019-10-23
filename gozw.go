@@ -3,7 +3,6 @@ package gozw
 import (
 	"context"
 	"encoding"
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -11,6 +10,7 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 
 	"github.com/gozwave/gozw/cc"
 	zwsec "github.com/gozwave/gozw/cc/security"
@@ -59,15 +59,36 @@ type Client struct {
 	secureInclusionStep map[byte]chan error
 }
 
+type ClientOptions struct {
+	LoggerConfig *zap.Config
+	DBName       string
+	SerialPort   string
+	BaudRate     int
+	NetworkKey   []byte
+}
+
+func NewClient(ctx context.Context, opts ClientOptions) (*Client, error) {
+	return newClient(ctx, opts)
+}
+
 func NewDefaultClient(dbName, serialPort string, baudRate int, networkKey []byte) (*Client, error) {
-	logger, err := NewLogger()
+	return newClient(context.Background(), ClientOptions{
+		DBName:     dbName,
+		SerialPort: serialPort,
+		BaudRate:   baudRate,
+		NetworkKey: networkKey,
+	})
+}
+
+func newClient(ctx context.Context, opts ClientOptions) (*Client, error) {
+	logger, err := NewLogger(opts.LoggerConfig)
 	if err != nil {
 		return nil, errors.Wrap(err, "initialize logger")
 	}
 
 	client := Client{
 		Controller:          Controller{},
-		networkKey:          networkKey,
+		networkKey:          opts.NetworkKey,
 		nodes:               map[byte]*Node{},
 		EventCallback:       DefaultEventCallback,
 		l:                   logger,
@@ -76,7 +97,7 @@ func NewDefaultClient(dbName, serialPort string, baudRate int, networkKey []byte
 
 	client.ctx, client.cancel = context.WithCancel(context.Background())
 
-	transport, err := transport.NewSerialPortTransport(serialPort, baudRate)
+	transport, err := transport.NewSerialPortTransport(opts.SerialPort, opts.BaudRate)
 	if err != nil {
 		return nil, errors.Wrap(err, "initializing transport")
 	}
@@ -92,7 +113,7 @@ func NewDefaultClient(dbName, serialPort string, baudRate int, networkKey []byte
 
 	client.securityLayer = security.NewLayer(client.networkKey, logger)
 
-	err = client.initDb(dbName)
+	err = client.initDb(opts.DBName)
 	if err != nil {
 		return nil, errors.Wrap(err, "initialize db")
 	}
@@ -109,6 +130,8 @@ func NewDefaultClient(dbName, serialPort string, baudRate int, networkKey []byte
 }
 
 func (c *Client) SetLogger(logger *zap.Logger) {
+	// TODO(zacatac): Refactor to cascade new logger down to
+	// dependent layers e.g. frame / session
 	c.l = logger
 }
 
@@ -159,23 +182,22 @@ func (c *Client) clearDb() (err error) {
 }
 
 //  NewLogger builds a  new logger.
-func NewLogger() (*zap.Logger, error) {
-	rawJSON := []byte(`{
-		"level": "debug",
-		"encoding": "json",
-		"outputPaths": ["stdout"],
-		"errorOutputPaths": ["stderr"],
-		"encoderConfig": {
-		  "messageKey": "message",
-		  "levelKey": "level",
-		  "levelEncoder": "lowercase"
-		}
-	  }`)
-
-	var cfg zap.Config
-	if err := json.Unmarshal(rawJSON, &cfg); err != nil {
-		return nil, errors.Wrap(err, "unmarshal config")
+func NewLogger(cfg *zap.Config) (*zap.Logger, error) {
+	defaultConfig := &zap.Config{
+		Level:            zap.NewAtomicLevelAt(zap.InfoLevel),
+		Encoding:         "json",
+		OutputPaths:      []string{"stdout"},
+		ErrorOutputPaths: []string{"stderr"},
+		EncoderConfig: zapcore.EncoderConfig{
+			MessageKey:  "message",
+			LevelKey:    "level",
+			EncodeLevel: zapcore.LowercaseLevelEncoder,
+		},
 	}
+	if cfg == nil {
+		cfg = defaultConfig
+	}
+
 	logger, err := cfg.Build()
 	if err != nil {
 		return nil, errors.Wrap(err, "build logger")
