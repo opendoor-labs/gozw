@@ -5,7 +5,7 @@ const (
 	FnSerialAPIApplicationNodeInformation      = 0x03
 	FnApplicationCommandHandler                = 0x04
 	FnGetControllerCapabilities                = 0x05
-	FnSerialAPIGetTimeouts                     = 0x06
+	FnSerialAPISetTimeouts                     = 0x06
 	FnSerialAPIGetCapabilities                 = 0x07
 	FnSerialAPISoftReset                       = 0x08
 	FnGetProtocolVersion                       = 0x09

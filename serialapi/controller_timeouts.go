@@ -13,6 +13,7 @@ type ControllerTimeouts struct {
 }
 
 const (
+	// See INS12350-14 section 7.5
 	ackTimeout  = 0x96 // 0x95 = 150 -- multiply by 10 to get 1500ms
 	byteTimeout = 0x0F // 0x0F = 15 -- multiply by 10 to get 150ms
 
@@ -23,7 +24,7 @@ func (s *Layer) SetControllerTimeouts() (*ControllerTimeouts, error) {
 	done := make(chan *frame.Frame)
 
 	request := &session.Request{
-		FunctionID: protocol.FnSerialAPIGetTimeouts,
+		FunctionID: protocol.FnSerialAPISetTimeouts,
 		HasReturn:  true,
 		ReturnCallback: func(err error, ret *frame.Frame) bool {
 			done <- ret
