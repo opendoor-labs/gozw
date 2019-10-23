@@ -254,9 +254,9 @@ func (n *Node) RequestNodeInformationFrame() error {
 // To optimize the interview process we'll be interview command classes
 // in the following order:
 // 1) SecurityCommandClass
-// 1) VersionCommandClass
-// 2) Remaining insecure command classes
-// 3) Secure command classes
+// 2) VersionCommandClass
+// 3) Remaining insecure command classes
+// 4) Secure command classes
 func commandClassesInOrderToInterview(set cc.CommandClassSet) []cc.CommandClassID {
 	insecure := set.ListBySecureStatus(false)
 
