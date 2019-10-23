@@ -252,8 +252,10 @@ func (n *Node) RequestNodeInformationFrame() error {
 }
 
 func (n *Node) LoadCommandClassVersions() error {
+	// These timeouts are incredibly sensitive, and adjusting
+	// them may cause the interview process to fail intermittently
 	timeoutSlow := 1 * time.Second
-	timeoutFast := 50 * time.Millisecond
+	timeoutFast := 100 * time.Millisecond
 	for _, commandClass := range n.CommandClasses {
 		interviewTimeout := timeoutSlow
 
