@@ -251,28 +251,105 @@ func (n *Node) RequestNodeInformationFrame() error {
 	return err
 }
 
+// To optimize the interview process we'll be interview command classes
+// in the following order:
+// 1) SecurityCommandClass
+// 1) VersionCommandClass
+// 2) Remaining insecure command classes
+// 3) Secure command classes
+func commandClassesInOrderToInterview(set cc.CommandClassSet) []cc.CommandClassID {
+	insecure := set.ListBySecureStatus(false)
+
+	securityccidx := -1
+	versionccidx := -1
+	remaininginsecure := []cc.CommandClassID{}
+	for idx, ccid := range insecure {
+		if isVersionCommandClassID(ccid) {
+			versionccidx = idx
+			continue
+		}
+		if isSecurityCommandClassID(ccid) {
+			securityccidx = idx
+			continue
+		}
+		remaininginsecure = append(remaininginsecure, ccid)
+	}
+
+	if securityccidx > -1 && versionccidx > -1 {
+		insecure = append([]cc.CommandClassID{
+			insecure[securityccidx],
+			insecure[versionccidx],
+		},
+			remaininginsecure...)
+	}
+
+	secure := set.ListBySecureStatus(true)
+	fmt.Println("insecure")
+	for i, ccid := range insecure {
+		fmt.Printf("idx: %d: %s\n", i, ccid)
+	}
+	fmt.Println("secure")
+	for i, ccid := range secure {
+		fmt.Printf("idx: %d: %s\n", i, ccid)
+	}
+
+	return append(insecure, secure...)
+	// inOrder := make([]*cc.CommandClassSupport, 0, len(set))
+	// for _, ccPtr := range set {
+	// 	if ccPtr == nil {
+	// 		continue
+	// 	}
+	// 	commandc := *ccPtr
+	// 	if isVersionCommandClassID(commandc.CommandClass) {
+	// 		inOrder = append([]*cc.CommandClassSupport{&commandc}, inOrder...)
+	// 		continue
+	// 	}
+	// 	inOrder = append(inOrder)
+	// }
+	// return inOrder
+}
+
+func isVersionCommandClassID(id cc.CommandClassID) bool {
+	// in practice these three command class IDs are the same
+	return id == cc.Version ||
+		id == cc.VersionV2 ||
+		id == cc.VersionV3
+}
+
+func isSecurityCommandClassID(id cc.CommandClassID) bool {
+	// TODO(zacatac): These are differen command class IDs.
+	// Need to refer to documentation on Security2 command class.
+	//
+	// It's possible that newer devices which support
+	// S2 security report that they support both S0 and S2
+	return id == cc.Security ||
+		id == cc.Security2
+}
+
 func (n *Node) LoadCommandClassVersions() error {
 	// These timeouts are incredibly sensitive, and adjusting
 	// them may cause the interview process to fail intermittently
 	timeoutSlow := 1 * time.Second
 	timeoutFast := 100 * time.Millisecond
-	for _, commandClass := range n.CommandClasses {
+
+	inOrder := commandClassesInOrderToInterview(n.CommandClasses)
+	for _, commandClassID := range inOrder {
 		interviewTimeout := timeoutSlow
 
 		var cmd cc.Command
 		switch n.CommandClasses.GetVersion(cc.Version) {
 		case 0x02:
 			cmd = &versionv2.CommandClassGet{
-				RequestedCommandClass: byte(commandClass.CommandClass),
+				RequestedCommandClass: byte(commandClassID),
 			}
 			interviewTimeout = timeoutFast
 		case 0x03:
 			cmd = &versionv3.CommandClassGet{
-				RequestedCommandClass: byte(commandClass.CommandClass),
+				RequestedCommandClass: byte(commandClassID),
 			}
 		default:
 			cmd = &version.CommandClassGet{
-				RequestedCommandClass: byte(commandClass.CommandClass),
+				RequestedCommandClass: byte(commandClassID),
 			}
 		}
 
