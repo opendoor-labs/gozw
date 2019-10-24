@@ -346,7 +346,7 @@ func (n *Node) LoadCommandClassVersions() error {
 		waitingForVersionSince := time.Now()
 
 		// Wait until either the version has been reported, or we've waited too long
-		// 5 seconds is used to be sure any collisions (and thus CAN timeouts) are over
+		// 3.5 seconds is used to be sure any collisions (and thus CAN timeouts) are over
 		for {
 			// Check to see if this command class has been reported
 			if v := n.CommandClasses.GetVersion(commandClassID); v != 0 {
