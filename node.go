@@ -306,22 +306,22 @@ func isSecurityCommandClassID(id cc.CommandClassID) bool {
 }
 
 func (n *Node) LoadCommandClassVersions() error {
-	// These timeouts are incredibly sensitive, and adjusting
-	// them may cause the interview process to fail intermittently
-	timeoutSlow := 1 * time.Second
-	timeoutFast := 100 * time.Millisecond
+	// The pairing process is incredibly sensitive to timeouts or
+	// delays. Certain values may cause the interview process to
+	// fail intermittently.
+
+	// Defines how long to wait between checking whether a given CC
+	// has reported a version
+	versionReportedQueryPeriod := time.Millisecond * 10
 
 	inOrder := commandClassesInOrderToInterview(n.CommandClasses)
 	for _, commandClassID := range inOrder {
-		interviewTimeout := timeoutSlow
-
 		var cmd cc.Command
 		switch n.CommandClasses.GetVersion(cc.Version) {
 		case 0x02:
 			cmd = &versionv2.CommandClassGet{
 				RequestedCommandClass: byte(commandClassID),
 			}
-			interviewTimeout = timeoutFast
 		case 0x03:
 			cmd = &versionv3.CommandClassGet{
 				RequestedCommandClass: byte(commandClassID),
@@ -342,7 +342,27 @@ func (n *Node) LoadCommandClassVersions() error {
 			return err
 		}
 
-		time.Sleep(interviewTimeout)
+		// Record time that we started waiting for a version report
+		waitingForVersionSince := time.Now()
+
+		// Wait until either the version has been reported, or we've waited too long
+		// 5 seconds is used to be sure any collisions (and thus CAN timeouts) are over
+		for {
+			// Check to see if this command class has been reported
+			if v := n.CommandClasses.GetVersion(commandClassID); v != 0 {
+				break
+			}
+
+			if waitingForVersionSince.Add(time.Second * 5).Before(time.Now()) {
+				n.client.l.Warn("stopped waiting for confirmation of version command class",
+					zap.String("command class ID", fmt.Sprintf("%02x", commandClassID)),
+				)
+				break
+			}
+
+			time.Sleep(versionReportedQueryPeriod)
+		}
+
 	}
 
 	return nil
