@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -33,15 +32,15 @@ func main() {
 	spew.Dump(client.Controller)
 
 	for _, node := range client.Nodes() {
-		fmt.Println(node.String())
+		log.Println(node.String())
 	}
 
-	fmt.Println("removing node, put device in unpairing mode")
+	log.Println("removing node, put device in unpairing mode")
 	if _, err := client.RemoveNode(); err != nil {
 		log.Fatalf("failed to remove node: %v", err)
 	}
 
-	fmt.Println("adding node, put device in pairing mode")
+	log.Println("adding node, put device in pairing mode")
 
 	progressChan := make(chan gozw.PairingProgressUpdate)
 
@@ -49,9 +48,10 @@ func main() {
 		for {
 			select {
 			case newProgress := <-progressChan:
-				fmt.Printf("pairing progress update: %d/%d", newProgress.InterviewedCommandClassCount, newProgress.ReportedCommandClassCount)
+				log.Printf("pairing progress update: %d/%d", newProgress.InterviewedCommandClassCount, newProgress.ReportedCommandClassCount)
 			case <-ctx.Done():
-				fmt.Println("pairing failed", ctx.Err())
+				log.Fatalln("pairing failed", ctx.Err())
+				return
 			}
 		}
 	}()
@@ -61,5 +61,5 @@ func main() {
 		log.Fatalf("failed to add node: %v", err)
 	}
 
-	fmt.Println(node.String())
+	log.Println(node.String())
 }
