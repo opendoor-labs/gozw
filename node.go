@@ -251,28 +251,84 @@ func (n *Node) RequestNodeInformationFrame() error {
 	return err
 }
 
-func (n *Node) LoadCommandClassVersions() error {
-	// These timeouts are incredibly sensitive, and adjusting
-	// them may cause the interview process to fail intermittently
-	timeoutSlow := 1 * time.Second
-	timeoutFast := 100 * time.Millisecond
-	for _, commandClass := range n.CommandClasses {
-		interviewTimeout := timeoutSlow
+// To optimize the interview process we'll be interview command classes
+// in the following order:
+// 1) SecurityCommandClass
+// 2) VersionCommandClass
+// 3) Remaining insecure command classes
+// 4) Secure command classes
+func commandClassesInOrderToInterview(set cc.CommandClassSet) []cc.CommandClassID {
+	insecure := set.ListBySecureStatus(false)
 
+	securityccidx := -1
+	versionccidx := -1
+	remaininginsecure := []cc.CommandClassID{}
+	for idx, ccid := range insecure {
+		if isVersionCommandClassID(ccid) {
+			versionccidx = idx
+			continue
+		}
+		if isSecurityCommandClassID(ccid) {
+			securityccidx = idx
+			continue
+		}
+		remaininginsecure = append(remaininginsecure, ccid)
+	}
+
+	if securityccidx > -1 && versionccidx > -1 {
+		insecure = append([]cc.CommandClassID{
+			insecure[securityccidx],
+			insecure[versionccidx],
+		},
+			remaininginsecure...)
+	}
+
+	secure := set.ListBySecureStatus(true)
+	return append(insecure, secure...)
+
+}
+
+func isVersionCommandClassID(id cc.CommandClassID) bool {
+	// in practice these three command class IDs are the same
+	return id == cc.Version ||
+		id == cc.VersionV2 ||
+		id == cc.VersionV3
+}
+
+func isSecurityCommandClassID(id cc.CommandClassID) bool {
+	// TODO(zacatac): These are different command class IDs.
+	// Need to refer to documentation on Security2 command class.
+	//
+	// It's possible that newer devices which support
+	// S2 security report that they support both S0 and S2
+	return id == cc.Security ||
+		id == cc.Security2
+}
+
+func (n *Node) LoadCommandClassVersions() error {
+	// The pairing process is incredibly sensitive to timeouts or
+	// delays. Certain values may cause the interview process to
+	// fail intermittently.
+
+	// Defines how long to wait between checking whether a given CC
+	// has reported a version
+	versionReportedQueryPeriod := time.Millisecond * 10
+
+	inOrder := commandClassesInOrderToInterview(n.CommandClasses)
+	for _, commandClassID := range inOrder {
 		var cmd cc.Command
 		switch n.CommandClasses.GetVersion(cc.Version) {
 		case 0x02:
 			cmd = &versionv2.CommandClassGet{
-				RequestedCommandClass: byte(commandClass.CommandClass),
+				RequestedCommandClass: byte(commandClassID),
 			}
-			interviewTimeout = timeoutFast
 		case 0x03:
 			cmd = &versionv3.CommandClassGet{
-				RequestedCommandClass: byte(commandClass.CommandClass),
+				RequestedCommandClass: byte(commandClassID),
 			}
 		default:
 			cmd = &version.CommandClassGet{
-				RequestedCommandClass: byte(commandClass.CommandClass),
+				RequestedCommandClass: byte(commandClassID),
 			}
 		}
 
@@ -286,7 +342,27 @@ func (n *Node) LoadCommandClassVersions() error {
 			return err
 		}
 
-		time.Sleep(interviewTimeout)
+		// Record time that we started waiting for a version report
+		waitingForVersionSince := time.Now()
+
+		// Wait until either the version has been reported, or we've waited too long
+		// 5 seconds is used to be sure any collisions (and thus CAN timeouts) are over
+		for {
+			// Check to see if this command class has been reported
+			if v := n.CommandClasses.GetVersion(commandClassID); v != 0 {
+				break
+			}
+
+			if waitingForVersionSince.Add(time.Second * 5).Before(time.Now()) {
+				n.client.l.Warn("stopped waiting for confirmation of version command class",
+					zap.String("command class ID", fmt.Sprintf("%02x", commandClassID)),
+				)
+				break
+			}
+
+			time.Sleep(versionReportedQueryPeriod)
+		}
+
 	}
 
 	return nil

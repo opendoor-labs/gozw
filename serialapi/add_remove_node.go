@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"time"
 
+	"go.uber.org/zap"
+
 	"github.com/gozwave/gozw/frame"
 	"github.com/gozwave/gozw/protocol"
 	"github.com/gozwave/gozw/session"
-	"go.uber.org/zap"
 )
 
 // AddNode will put the controller into add node mode and handle operations for adding a node.
@@ -94,7 +95,24 @@ func (s *Layer) AddNode() (*AddRemoveNodeCallback, error) {
 	}
 
 	return newNode, nil
+}
 
+func (s *Layer) CancelAddRemove() error {
+	request := &session.Request{
+		FunctionID: protocol.FnAddNodeToNetwork,
+		Payload:    []byte{protocol.AddNodeStop},
+
+		HasReturn:        false,
+		ReceivesCallback: true,
+		Lock:             false,
+
+		Callback: func(cbFrame frame.Frame) {
+			s.l.Info("Cancel Add/Remove callback frame:", zap.Any("cbFrame", cbFrame))
+		},
+	}
+	s.sessionLayer.MakeRequest(request)
+
+	return nil
 }
 
 // RemoveNode will put the controller into remove node mode  and handle all operations.
