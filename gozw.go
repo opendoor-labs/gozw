@@ -433,6 +433,12 @@ func (c *Client) handleApplicationCommands() {
 	for {
 		select {
 		case cmd := <-c.serialAPI.ControllerCommands():
+			if len(cmd.CommandData) < 1 {
+				// This may indicate corrupt data or a parsing/interpretation error
+				c.l.Warn("received command data with a length of 0")
+				continue
+			}
+
 			switch cc.CommandClassID(cmd.CommandData[0]) {
 
 			case cc.Security:
