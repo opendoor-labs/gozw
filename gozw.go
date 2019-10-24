@@ -300,7 +300,7 @@ func (c *Client) FactoryReset() error {
 
 func (c *Client) AddNode() (*Node, error) {
 	prog := make(chan PairingProgressUpdate, 1)
-	ctx, _ := context.WithTimeout(context.Background(), 1*time.Minute) // Times out after 1 minute
+	ctx, _ := context.WithTimeout(context.Background(), 3*time.Minute) // Times out after 3 minutes
 	go func() {
 		for {
 			select {
