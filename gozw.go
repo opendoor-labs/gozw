@@ -323,6 +323,23 @@ func (c *Client) FactoryReset() error {
 func (c *Client) AddNode() (*Node, error) {
 	prog := make(chan PairingProgressUpdate, 1)
 	ctx, _ := context.WithTimeout(context.Background(), 3*time.Minute) // Times out after 3 minutes
+	go func() {
+		for {
+			select {
+			case p := <-prog:
+				if p.ReportedCommandClassCount > 0 {
+					c.l.Info("pairing progress update",
+						zap.Int("percent", p.InterviewedCommandClassCount/p.ReportedCommandClassCount),
+					)
+				} else {
+					c.l.Warn("node may be reporting 0 available command classes")
+				}
+			case <-ctx.Done():
+				return
+			default:
+			}
+		}
+	}()
 	return c.AddNodeWithProgress(ctx, prog)
 }
 
@@ -370,6 +387,9 @@ func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingP
 			currentProgress := node.InterviewedCommandClassCount
 
 			if currentProgress == lastReportedInterviewLength {
+				// Re-checking too quickly is impolite
+				// (and hogs resources on constrained systems)
+				time.Sleep(time.Millisecond * 10)
 				continue
 			}
 
@@ -382,6 +402,10 @@ func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingP
 			case progress <- update:
 				lastReportedInterviewLength = currentProgress
 				continue
+			case <-time.After(time.Millisecond * 100):
+				c.l.Error("dropping progress update due to full channel")
+				// Warning: This _will_ break progress, but should not otherwise impact pairing
+				return
 			case <-ctx.Done():
 				return
 			}
@@ -431,6 +455,12 @@ func (c *Client) handleApplicationCommands() {
 	for {
 		select {
 		case cmd := <-c.serialAPI.ControllerCommands():
+			if len(cmd.CommandData) < 1 {
+				// This may indicate corrupt data or a parsing/interpretation error
+				c.l.Warn("received command data with a length of 0")
+				continue
+			}
+
 			switch cc.CommandClassID(cmd.CommandData[0]) {
 
 			case cc.Security:
