@@ -300,7 +300,24 @@ func (c *Client) FactoryReset() error {
 
 func (c *Client) AddNode() (*Node, error) {
 	prog := make(chan PairingProgressUpdate, 1)
-	ctx, _ := context.WithTimeout(context.Background(), 3*time.Minute) // Times out after 3 minutes
+	ctx, _ := context.WithTimeout(context.Background(), 1*time.Minute) // Times out after 1 minute
+	go func() {
+		for {
+			select {
+			case p := <-prog:
+				if p.ReportedCommandClassCount > 0 {
+					c.l.Info("pairing progress update",
+						zap.Int("percent", p.InterviewedCommandClassCount/p.ReportedCommandClassCount),
+					)
+				} else {
+					c.l.Warn("node may be reporting 0 available command classes")
+				}
+			case <-ctx.Done():
+				return
+			default:
+			}
+		}
+	}()
 	return c.AddNodeWithProgress(ctx, prog)
 }
 
@@ -365,6 +382,8 @@ func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingP
 				continue
 			case <-time.After(time.Millisecond * 100):
 				c.l.Error("dropping progress update due to full channel")
+				// Warning: This _will_ break progress, but should not otherwise impact pairing
+				return
 			case <-ctx.Done():
 				return
 			}
