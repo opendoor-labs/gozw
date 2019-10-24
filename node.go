@@ -353,7 +353,7 @@ func (n *Node) LoadCommandClassVersions() error {
 				break
 			}
 
-			if waitingForVersionSince.Add(time.Second * 5).Before(time.Now()) {
+			if waitingForVersionSince.Add(time.Millisecond * 3500).Before(time.Now()) {
 				n.client.l.Warn("stopped waiting for confirmation of version command class",
 					zap.String("command class ID", fmt.Sprintf("%02x", commandClassID)),
 				)
