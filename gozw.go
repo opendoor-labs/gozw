@@ -348,6 +348,9 @@ func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingP
 			currentProgress := node.InterviewedCommandClassCount
 
 			if currentProgress == lastReportedInterviewLength {
+				// Re-checking too quickly is impolite
+				// (and hogs resources on constrained systems)
+				time.Sleep(time.Millisecond * 10)
 				continue
 			}
 
@@ -360,6 +363,8 @@ func (c *Client) AddNodeWithProgress(ctx context.Context, progress chan PairingP
 			case progress <- update:
 				lastReportedInterviewLength = currentProgress
 				continue
+			case <-time.After(time.Millisecond * 100):
+				c.l.Error("dropping progress update due to full channel")
 			case <-ctx.Done():
 				return
 			}
