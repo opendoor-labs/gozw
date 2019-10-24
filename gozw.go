@@ -425,6 +425,10 @@ func (c *Client) RemoveNode() (byte, error) {
 	return result.Source, nil
 }
 
+func (c *Client) CancelAddRemoveRequest() error {
+	return c.serialAPI.CancelAddRemoveNode()
+}
+
 func (c *Client) RemoveFailedNode(nodeID byte) (ok bool, err error) {
 	return c.serialAPI.RemoveFailedNode(nodeID)
 }

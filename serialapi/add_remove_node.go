@@ -97,7 +97,7 @@ func (s *Layer) AddNode() (*AddRemoveNodeCallback, error) {
 	return newNode, nil
 }
 
-func (s *Layer) CancelAddRemove() error {
+func (s *Layer) CancelAddRemoveNode() error {
 	request := &session.Request{
 		FunctionID: protocol.FnAddNodeToNetwork,
 		Payload:    []byte{protocol.AddNodeStop},
