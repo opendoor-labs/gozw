@@ -184,8 +184,10 @@ func (s *Layer) sendThread() {
 				select {
 				case response := <-s.responses:
 					if response.IsCan() {
-						// Hopefully we won't collide again if we wait for 10ms :)
-						time.Sleep(100 * time.Millisecond)
+						// As per INS12350-14 § 6.3
+						baseCANTimeout := 100 * time.Millisecond
+						attemptTimeoutSupplement := time.Duration(attempts) * time.Second
+						time.Sleep(baseCANTimeout + attemptTimeoutSupplement)
 						if attempts > 3 {
 							s.l.Error("too many retries")
 							request.ReturnCallback(errors.New("too many retries sending command"), nil)
