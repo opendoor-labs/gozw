@@ -7,9 +7,9 @@ import (
 	"sync"
 )
 
-//go:generate ../bin/gen command-classes -c gen.config.yaml -o .
-//go:generate ../bin/gen parser -c gen.config.yaml -o ./command_classes_gen.go
-//go:generate ../bin/gen devices -c gen.config.yaml -o ./devices_gen.go
+//go:generate ../bin/gen command-classes --config gen.config.yaml --output .
+//go:generate ../bin/gen parser --config gen.config.yaml --output ./command_classes_gen.go
+//go:generate ../bin/gen devices --config gen.config.yaml --output ./devices_gen.go
 
 type (
 	CommandClassID byte

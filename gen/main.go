@@ -28,22 +28,22 @@ func main() {
 		return nil
 	}
 
-	app.Commands = []cli.Command{
+	app.Commands = []*cli.Command{
 		{
 			Name:  "devices",
 			Usage: "Generate device info",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "output, o",
 					Usage: "Output filename",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "config, c",
 					Usage: "Config file",
 				},
 			},
 			Before: before,
-			Action: func(ctx *cli.Context) {
+			Action: func(ctx *cli.Context) error {
 				gen, err := NewGenerator(ctx.String("output"), ctx.String("config"))
 				if err != nil {
 
@@ -52,9 +52,7 @@ func main() {
 				}
 
 				err = gen.GenDevices()
-				if err != nil {
-					panic(err)
-				}
+				return err
 			},
 		},
 
@@ -62,28 +60,24 @@ func main() {
 			Name:  "command-classes",
 			Usage: "Generate command class",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "output, o",
 					Usage: "Output directory",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "config, c",
 					Usage: "Config file",
 				},
 			},
 			Before: before,
-			Action: func(ctx *cli.Context) {
+			Action: func(ctx *cli.Context) error {
 				gen, err := NewGenerator(ctx.String("output"), ctx.String("config"))
 				if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
+					return err
 				}
 
 				err = gen.GenCommandClasses()
-				if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
-				}
+				return err
 			},
 		},
 
@@ -91,28 +85,24 @@ func main() {
 			Name:  "parser",
 			Usage: "Generate command class parser",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "output, o",
 					Usage: "Output directory",
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  "config, c",
 					Usage: "Config file",
 				},
 			},
 			Before: before,
-			Action: func(ctx *cli.Context) {
+			Action: func(ctx *cli.Context) error {
 				gen, err := NewGenerator(ctx.String("output"), ctx.String("config"))
 				if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
+					return err
 				}
 
 				err = gen.GenParser()
-				if err != nil {
-					fmt.Println(err)
-					os.Exit(1)
-				}
+				return err
 			},
 		},
 	}
