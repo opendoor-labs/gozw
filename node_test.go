@@ -3,8 +3,7 @@ package gozw
 import (
 	"testing"
 
-	"github.com/gozwave/gozw/cc"
-
+	"github.com/opendoor-labs/gozw/cc"
 	"github.com/stretchr/testify/assert"
 )
 

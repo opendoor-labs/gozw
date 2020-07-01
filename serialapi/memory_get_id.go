@@ -4,9 +4,9 @@ import (
 	"encoding/binary"
 	"errors"
 
-	"github.com/gozwave/gozw/frame"
-	"github.com/gozwave/gozw/protocol"
-	"github.com/gozwave/gozw/session"
+	"github.com/opendoor-labs/gozw/frame"
+	"github.com/opendoor-labs/gozw/protocol"
+	"github.com/opendoor-labs/gozw/session"
 )
 
 // MemoryGetID will get the home/node id.

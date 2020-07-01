@@ -5,12 +5,12 @@
 // templates/command-struct-fields.tpl (573B)
 // templates/command.tpl (2.088kB)
 // templates/devices.tpl (2.295kB)
-// templates/import.tpl (301B)
+// templates/import.tpl (307B)
 // templates/marshal-command-param.tpl (2.422kB)
 // templates/marshal-command-params.tpl (368B)
 // templates/marshal-command-vg-params.tpl (3.356kB)
 // templates/marshal-variant.tpl (327B)
-// templates/unmarshal-command-param.tpl (2.17kB)
+// templates/unmarshal-command-param.tpl (2.173kB)
 // templates/unmarshal-command-params.tpl (1.147kB)
 // templates/unmarshal-command-vg-params.tpl (2.956kB)
 // templates/unmarshal-variant.tpl (843B)
@@ -34,7 +34,7 @@ import (
 func bindataRead(data []byte, name string) ([]byte, error) {
 	gz, err := gzip.NewReader(bytes.NewBuffer(data))
 	if err != nil {
-		return nil, fmt.Errorf("read %q: %v", name, err)
+		return nil, fmt.Errorf("read %q: %w", name, err)
 	}
 
 	var buf bytes.Buffer
@@ -42,7 +42,7 @@ func bindataRead(data []byte, name string) ([]byte, error) {
 	clErr := gz.Close()
 
 	if err != nil {
-		return nil, fmt.Errorf("read %q: %v", name, err)
+		return nil, fmt.Errorf("read %q: %w", name, err)
 	}
 	if clErr != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func dataZwaveDefsXml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "data/zwave-defs.xml", size: 915176, mode: os.FileMode(0755), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "data/zwave-defs.xml", size: 915176, mode: os.FileMode(0755), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x6b, 0xda, 0xd1, 0xd, 0x71, 0xe4, 0x14, 0x5b, 0x63, 0x97, 0x40, 0x56, 0xe, 0xb, 0x20, 0x70, 0xa4, 0xb4, 0x3b, 0x16, 0x3e, 0x5c, 0xec, 0x70, 0xce, 0xaa, 0x11, 0x7a, 0x58, 0x39, 0xe1, 0x42}}
 	return a, nil
 }
@@ -118,7 +118,7 @@ func templatesCommandClassesTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/command-classes.tpl", size: 411, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/command-classes.tpl", size: 411, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf8, 0x14, 0x6d, 0xdc, 0xd5, 0x51, 0xe9, 0xa5, 0x45, 0x77, 0xe5, 0xd1, 0x50, 0x1b, 0xbb, 0x5b, 0x3, 0x46, 0x44, 0x6f, 0x32, 0x30, 0x17, 0x7, 0x19, 0x1f, 0xf6, 0xd2, 0x16, 0xf6, 0xb9, 0xfe}}
 	return a, nil
 }
@@ -138,7 +138,7 @@ func templatesCommandStructFieldsTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/command-struct-fields.tpl", size: 573, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/command-struct-fields.tpl", size: 573, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x5d, 0x74, 0x17, 0x81, 0x8b, 0xb1, 0x20, 0xa5, 0x3, 0x9b, 0xeb, 0x19, 0x88, 0x32, 0xa3, 0x2c, 0x34, 0xc7, 0x60, 0x22, 0x2b, 0xcf, 0x97, 0xcb, 0x37, 0x18, 0x62, 0xb3, 0x1a, 0x21, 0xa2, 0x91}}
 	return a, nil
 }
@@ -158,7 +158,7 @@ func templatesCommandTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/command.tpl", size: 2088, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/command.tpl", size: 2088, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x32, 0x26, 0x8b, 0x3e, 0x25, 0x6e, 0xde, 0xbb, 0x3b, 0x12, 0x81, 0x1e, 0xcb, 0xab, 0x39, 0x1f, 0x70, 0xcc, 0x6c, 0x4, 0x54, 0x78, 0x96, 0x96, 0xe7, 0x24, 0x62, 0x4e, 0xbd, 0xdc, 0x24, 0x85}}
 	return a, nil
 }
@@ -178,12 +178,12 @@ func templatesDevicesTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/devices.tpl", size: 2295, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/devices.tpl", size: 2295, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x92, 0x6b, 0x1d, 0xb3, 0x5a, 0xde, 0xad, 0xfd, 0x1c, 0x9e, 0xd2, 0xb0, 0xc6, 0x41, 0xca, 0x2, 0x1e, 0xa6, 0x6f, 0x79, 0x91, 0x5, 0xd8, 0x9, 0xad, 0x55, 0x1d, 0xac, 0x28, 0x59, 0x30, 0xad}}
 	return a, nil
 }
 
-var _templatesImportTpl = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x8c\xce\xc1\x4a\xc4\x30\x10\x06\xe0\xfb\x3c\xc5\xcf\x9e\xda\xc3\x36\xcf\xb0\x6e\xb3\xb5\xa0\xa9\xb8\x15\x59\x6f\x31\x1b\x6b\xb0\x49\x4a\x9b\x2a\x18\xf2\xee\x82\x51\x04\x4f\x3b\x97\x39\xcc\xcf\x37\x3f\x63\xe8\xaf\xdb\x23\x0e\xed\x0d\x47\x7b\xc4\xee\xa1\xef\xb6\x0d\x17\xfc\x7e\xd7\xf3\x1a\x57\x27\x3c\x3d\x36\x5c\x10\x63\xa8\x3b\x88\xae\xc7\x6d\x57\xb7\x87\x13\xd1\x24\xd5\x9b\x1c\x34\xe4\x38\xaa\x51\x2e\x8b\x5e\x88\x8c\x9d\xfc\x1c\x50\x10\xf2\xc4\x38\x4b\x37\x68\x54\x7b\x6f\xad\x74\xe7\x7d\x0e\xa6\xf4\x1b\xd8\x0c\x26\xbc\xae\xcf\x95\xf2\x96\x0d\xfe\xf3\x43\xbe\xeb\xef\xcd\x94\x62\x31\x56\x8d\x0e\xb5\x99\x85\xb4\x3a\xa5\xcd\x1f\xba\x85\x76\xe7\x94\xa8\x24\x7a\x59\x9d\x82\x71\x26\x14\x25\x22\x5d\xf2\x34\xb3\x77\xb9\x7d\xa6\x2b\xe1\xfd\x54\x94\xf4\x8f\x4f\x3f\x7c\xbe\x22\xa6\xaf\x00\x00\x00\xff\xff\x7f\xf9\x2d\x12\x2d\x01\x00\x00")
+var _templatesImportTpl = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x8c\xcf\xc1\x4e\x84\x30\x10\xc6\xf1\xfb\x3c\xc5\x97\x3d\xc1\x01\xfa\x0c\xeb\xc2\x22\x89\x16\xe3\x62\xcc\x7a\xeb\x96\x8a\x8d\xb4\x43\x80\x8d\x89\x4d\xdf\xdd\x43\x35\x26\x9e\x9c\xeb\xfc\xf3\x9b\x8c\x10\xe8\x6f\xdb\x13\x8e\xed\x5d\x8d\xf6\x84\xfd\x53\xdf\x15\x4d\x2d\xeb\xc7\x7d\x5f\x57\xb8\x39\xe3\xe5\xb9\xa9\x25\x09\x81\xaa\x83\xec\x7a\xdc\x77\x55\x7b\x3c\x13\xcd\x4a\xbf\xab\xd1\x40\x4d\x93\x9e\xd4\xba\x9a\x95\xc8\xba\x99\x97\x0d\x19\x21\x4d\x08\x8b\xf2\xa3\x41\x79\x60\xe7\x94\x1f\x0e\x29\x8c\xf1\x27\xd8\x8d\x76\x7b\xbb\x5e\x4a\xcd\x4e\xf0\x6c\xfc\xc0\xbc\x14\x93\xba\xac\x62\xe4\xcf\x0f\xa1\xb5\x08\xa1\x6c\xcc\x56\xd9\x45\x2a\x67\x62\xdc\xfd\xd2\x05\x8c\x1f\x62\xa4\x9c\xe8\xf5\xea\x35\xac\xb7\x5b\x96\x23\xd0\x7f\x4e\x27\xf6\x21\xfd\x90\xe8\x52\x32\xcf\x59\x4e\x7f\xf8\xf8\xcd\xa7\x2d\x42\xfc\x0a\x00\x00\xff\xff\xde\x6a\x89\x29\x33\x01\x00\x00")
 
 func templatesImportTplBytes() ([]byte, error) {
 	return bindataRead(
@@ -198,8 +198,8 @@ func templatesImportTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/import.tpl", size: 301, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
-	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x3c, 0xed, 0x8a, 0xbe, 0x57, 0xdf, 0xb3, 0x3a, 0x2a, 0x4e, 0xc2, 0x50, 0xca, 0x6f, 0xaf, 0xaa, 0x5e, 0x15, 0xe, 0xc8, 0x3d, 0xe4, 0x20, 0xe3, 0x21, 0x95, 0xf2, 0x92, 0xbf, 0xee, 0x7b, 0xa8}}
+	info := bindataFileInfo{name: "templates/import.tpl", size: 307, mode: os.FileMode(0644), modTime: time.Unix(1593548792, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x30, 0x84, 0x34, 0x9b, 0x28, 0xd4, 0x1b, 0xc7, 0x87, 0x64, 0x5, 0x95, 0xc0, 0x7a, 0xac, 0x19, 0x60, 0x91, 0x2c, 0xf7, 0x67, 0xcf, 0x5f, 0x7b, 0x8, 0xc3, 0xa3, 0xf4, 0x89, 0x6d, 0x40, 0xd7}}
 	return a, nil
 }
 
@@ -218,7 +218,7 @@ func templatesMarshalCommandParamTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/marshal-command-param.tpl", size: 2422, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/marshal-command-param.tpl", size: 2422, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf5, 0x48, 0xfd, 0xd2, 0x20, 0x51, 0xe, 0x69, 0x33, 0xa6, 0xba, 0x6e, 0xf0, 0x43, 0x6a, 0x89, 0x88, 0x3a, 0xc3, 0xdd, 0x8a, 0xf, 0xd8, 0x3e, 0xa, 0x6b, 0x3d, 0x6f, 0x23, 0xe3, 0x7e, 0xb3}}
 	return a, nil
 }
@@ -238,7 +238,7 @@ func templatesMarshalCommandParamsTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/marshal-command-params.tpl", size: 368, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/marshal-command-params.tpl", size: 368, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x76, 0xd1, 0xae, 0xc1, 0x2a, 0xe6, 0x1d, 0x5e, 0xa5, 0x41, 0xa0, 0xdc, 0x64, 0x17, 0xe3, 0x1f, 0xd9, 0xc7, 0xbe, 0x91, 0x99, 0xb4, 0xb7, 0x7, 0xb0, 0x60, 0x75, 0x83, 0xca, 0xc, 0x5a, 0x4e}}
 	return a, nil
 }
@@ -258,7 +258,7 @@ func templatesMarshalCommandVgParamsTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/marshal-command-vg-params.tpl", size: 3356, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/marshal-command-vg-params.tpl", size: 3356, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x41, 0x80, 0xa2, 0xe1, 0x26, 0x36, 0x2f, 0x99, 0xcf, 0x9d, 0x50, 0xed, 0x9f, 0xd3, 0x3e, 0x1a, 0x3a, 0x6e, 0x16, 0x84, 0xcf, 0x42, 0xc, 0xdb, 0x0, 0xb9, 0xce, 0x2e, 0x29, 0x8a, 0xe6, 0x13}}
 	return a, nil
 }
@@ -278,12 +278,12 @@ func templatesMarshalVariantTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/marshal-variant.tpl", size: 327, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/marshal-variant.tpl", size: 327, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x77, 0x81, 0xcd, 0x25, 0x5c, 0xb7, 0xe0, 0x4f, 0xd0, 0x1d, 0x6c, 0xae, 0x13, 0xde, 0x3f, 0xf6, 0x11, 0x5f, 0x70, 0x62, 0xf2, 0x5a, 0xbd, 0x5d, 0x5e, 0x33, 0x70, 0x76, 0xf, 0x31, 0x3a, 0x6c}}
 	return a, nil
 }
 
-var _templatesUnmarshalCommandParamTpl = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xc4\x55\xef\x4b\xe3\x4a\x14\xfd\xde\xbf\xe2\x12\x1e\x62\x29\x8e\xcf\x2a\xef\x83\xbc\x08\xe9\xb3\x6f\x29\xae\x15\x62\xdc\x45\x96\x22\x53\x73\x93\x5e\x4c\x27\xdd\x99\xa9\x5a\x86\xf9\xdf\x97\xa4\xf9\xd1\xb8\x86\xa8\xcb\xb2\x5f\xca\x64\x66\xee\xbd\xe7\x9c\x7b\xee\xd4\x18\x8a\x00\xbf\x03\x0b\x36\x2b\x04\xe7\x8b\xe7\x4f\xbc\x69\xe0\x58\xdb\x03\x00\x30\x46\xe3\x72\x95\x70\x8d\xe0\xac\xc5\x92\x4b\xb5\xe0\xc9\xc1\x23\x97\xc4\x85\x76\x80\xe5\xd7\x8c\xc1\x44\x21\x34\xf2\x5c\x07\xfe\xcd\x7f\xc1\xdd\xe8\x36\x18\x3b\xd6\x1a\xf3\x97\xe0\x4b\x84\x53\x17\x82\xf4\x53\x3a\xcd\xd6\x2c\xfb\xb5\xb6\x67\x0c\xd4\x35\xf0\x99\x94\x56\x65\xe2\x2c\xb5\xe4\x22\x46\x60\x23\xd2\xff\x13\x26\x61\xb1\x9f\x9d\x50\x04\x6c\xa2\xa6\xa9\xf6\x51\xa1\x7c\xc4\xfa\x0c\xe0\x7e\x19\xb2\xa2\xa8\xb5\xcc\x98\xba\x6a\x9e\x65\x5b\x1a\x5c\xd8\x5f\xf1\x4d\x92\xf2\xf0\x1b\xcd\x8c\x79\x22\xbd\x28\x2e\x5c\x72\xf5\x60\xed\x9e\x31\x2c\x03\x8f\x22\xb4\xb6\x5f\x5e\xb8\x5e\x50\xa4\x51\x5a\x7b\x76\xb6\x7b\x5e\xe1\xaa\xbf\x9a\xeb\x82\x49\x9e\x7f\x2c\xd6\xcb\x2a\xe4\x4f\x81\x7d\x15\x5e\x26\x74\xc2\xe3\x5f\xd7\x39\xe1\x71\x85\xbc\x06\x0e\x7b\x60\x4c\x7e\xb8\x45\x0d\xae\xdb\xdc\xe8\x90\x91\x60\xe0\xc2\x51\xaf\xc5\x75\x9e\xef\x7b\xb7\x4e\xb7\xa9\x28\x82\x7d\x12\x21\x3e\x03\xf3\xa4\xe4\x1b\x4f\x6b\x49\x73\xf8\xbb\xcf\x26\xca\x53\xf7\x44\x2f\x7a\xf3\xd2\xb4\xe0\x82\xd2\x92\x44\x5c\xb7\xe4\x94\x06\xc6\xb4\x24\xfd\x8c\x22\xd6\x0b\x6b\x67\xfd\x92\x4f\xa2\xb0\xbb\xc4\xfb\x72\xbf\x2e\x55\x67\x5c\x8b\x92\xa3\x49\x70\xe9\x5d\x5f\x74\x6a\xf9\x06\xf0\xb3\x96\x12\xe7\x5f\xaf\xfc\xf3\x8f\x17\x98\x93\xe0\x72\xc3\x46\x14\x8f\x45\x48\x5c\xb0\x1b\x12\xfa\x78\xd8\xe8\xc8\x49\xa1\x78\x2e\xc5\x49\x3b\xd5\xbb\xe1\xc9\xef\x05\x72\xbc\x0b\xe4\xb8\x05\x48\xa9\x47\xe5\x51\x91\xea\x6c\xf4\xae\x56\x9a\x52\xc1\x93\xb2\xaf\x11\x24\x28\xca\xf4\x7d\xf8\xd7\x05\x02\x53\x98\x49\xa2\x5e\x4b\x01\x28\x65\x2a\x15\x9b\xe2\xd3\xbe\xa3\x12\xba\x47\xd8\xba\x20\x5d\x6b\x48\x23\x98\xa7\x6b\x11\x2a\xa7\x5f\xcd\x71\xe1\x1b\xdb\xeb\x7d\x80\xeb\xd1\x3f\x0d\xae\xc3\x5d\xae\xc3\x16\xae\x97\x9e\x7f\x31\xf6\x3b\x45\xdf\x8e\x3b\x1c\x1e\x82\x7a\xa0\xd5\x8a\x44\x0c\xdb\xc8\x37\x2b\x21\x28\xc9\x37\x6a\xa3\xbf\xe9\x79\x68\x79\xf1\xba\xed\x3e\x2b\x6e\xd2\x60\xf0\xda\xb0\xd3\x60\xd0\x60\x93\x3e\xa2\x04\x59\x94\x81\x39\xe9\xc6\x18\xf7\x76\x96\xc6\x40\x88\x11\x89\x1d\xc4\xdd\x86\x28\xb9\x94\x16\x82\x83\x0a\x49\xad\x4f\x06\x28\xca\xfe\x48\x80\x14\xa4\xc5\xcd\x22\xfc\x00\xf2\xde\xfd\x14\xf6\x1e\x83\xe5\x59\xaa\x67\x29\x53\x3f\xff\xfa\x11\x00\x00\xff\xff\x29\xae\xc6\x11\x7a\x08\x00\x00")
+var _templatesUnmarshalCommandParamTpl = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xc4\x55\x6d\x4b\xe3\x4c\x14\xfd\xee\xaf\xb8\x84\x07\xb1\x14\xc7\xc7\x2a\xfb\x41\x36\x42\xba\x76\x97\xe2\x5a\x21\xc6\x5d\x64\x29\x32\x35\x37\xe9\xc5\x74\xd2\x9d\x99\xaa\x65\x98\xff\xbe\x24\xcd\x4b\xe3\x1a\xa2\x2e\xcb\x7e\x29\x49\xe6\xbe\x9c\x73\xee\xb9\x53\x63\x28\x02\xfc\x09\x2c\x58\x2f\x11\x9c\x6f\x9e\x3f\xf6\x26\x81\x63\xed\x0e\x00\x80\x31\x1a\x17\xcb\x84\x6b\x04\x67\x25\x16\x5c\xaa\x39\x4f\xf6\x1f\xb8\x24\x2e\xb4\x03\x2c\x0f\x33\x06\x13\x85\xd0\xa8\x73\x15\xf8\xd7\x9f\x82\xdb\xe1\x4d\x30\x72\xac\x35\xe6\x3f\xc1\x17\x08\x27\x2e\x04\xe9\x97\x74\x92\x3d\xb3\xec\xd7\xda\x1d\x63\xa0\xee\x81\x4f\xa4\xb4\x2a\x0b\x67\xa5\x25\x17\x31\x02\x1b\x92\xfe\x4c\x98\x84\xc5\xf7\xec\x84\x22\x60\x63\x35\x49\xb5\x8f\x0a\xe5\x03\xd6\x67\x00\x77\x8b\x90\x15\x4d\xad\x65\xc6\xd4\x5d\xf3\x2a\x9b\xd6\xe0\xc2\xde\x92\xaf\x93\x94\x87\x3f\x68\x6a\xcc\x23\xe9\x79\x11\x70\xc1\xd5\xbd\xb5\xbb\xc6\xb0\x0c\x3c\x8a\xd0\xda\x5e\x19\x70\x35\xa7\x48\xa3\xb4\xf6\xf4\x74\xfb\xbc\xc2\x55\xbf\x35\x9f\x0b\x26\x79\xfd\x91\x58\x2d\xaa\x94\x7f\x05\xf6\x45\x78\x99\xd0\x09\x8f\xff\x5c\xe7\x84\xc7\x15\xf2\x1a\x38\xec\x82\x31\xf9\xe1\x06\x35\xb8\x6e\xf3\x43\x87\x8c\x04\x7d\x17\x0e\x77\x5a\x5c\xe7\xf9\xbe\x77\xe3\x74\x9b\x8a\x22\xd8\x23\x11\xe2\x13\x30\x4f\x4a\xbe\xf6\xb4\x96\x34\x83\xff\x7b\x6c\xac\x3c\x75\x47\xf4\x6c\x36\xcf\x4d\x0b\x2e\x28\x2d\x49\xc4\xf5\x48\x4e\xa8\x6f\x4c\x4b\xd1\xaf\x28\x62\x3d\xb7\x76\xda\x2b\xf9\x24\x0a\xbb\x5b\xbc\xad\xf6\xcb\x52\x75\xe6\xb5\x28\x39\x1c\x07\x17\xde\xd5\x79\xa7\x96\xaf\x00\x3f\x6d\x69\x71\xf6\xfd\xd2\x3f\x7b\x7f\x83\x19\x09\x2e\xd7\x6c\x48\xf1\x48\x84\xc4\x05\xbb\x26\xa1\x8f\x06\x8d\x89\x1c\x17\x8a\xe7\x52\x1c\xb7\x53\xbd\x1d\x1c\xff\x5d\x20\x47\xdb\x40\x8e\x5a\x80\x94\x7a\x54\x1e\x15\xa9\xce\x56\xef\x72\xa9\x29\x15\x3c\x29\xe7\x1a\x41\x82\xa2\x2c\xdf\x83\x8f\x2e\x10\x98\xc2\x4c\x12\xf5\x4a\x0a\x40\x29\x53\xa9\xd8\x04\x1f\xf7\x1c\x95\xd0\x1d\xc2\xc6\x05\xe9\x4a\x43\x1a\xc1\x2c\x5d\x89\x50\x39\x1b\x4c\xcd\x25\x7b\x07\xd7\xc3\x0f\x0d\xae\x83\x6d\xae\x83\x16\xae\x17\x9e\x7f\x3e\xf2\x3b\x45\xdf\xac\x3b\x1c\x1c\x80\xba\xa7\xe5\x92\x44\x0c\x9b\xcc\x57\x2b\x21\x28\xa9\x58\x6e\x2d\xde\x2b\x6e\x88\x96\x4b\xaf\xdb\xf1\xd3\x22\x92\xfa\xfd\x97\xf6\x9d\xfa\xfd\x06\xa1\xf4\x01\x25\xc8\xa2\x0d\xcc\x48\x3f\x9f\x47\xf5\x68\x0c\x84\x18\x91\xd8\x42\xdc\xed\x89\x92\x4b\xe9\x22\xd8\xaf\x90\xd4\x12\x65\x80\xa2\xec\xbf\x04\x48\x41\x5a\x44\x16\xe9\xfb\x90\x8f\xef\xb7\xb4\xb7\x78\x2c\xaf\x52\xdd\x4c\xd9\xd0\xf3\xb7\x5f\x01\x00\x00\xff\xff\xe2\xed\x45\x38\x7d\x08\x00\x00")
 
 func templatesUnmarshalCommandParamTplBytes() ([]byte, error) {
 	return bindataRead(
@@ -298,8 +298,8 @@ func templatesUnmarshalCommandParamTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/unmarshal-command-param.tpl", size: 2170, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
-	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xcd, 0xef, 0x1e, 0xb5, 0xcd, 0x78, 0x8f, 0x43, 0xd7, 0x72, 0xc2, 0x4c, 0x3e, 0xe4, 0x11, 0xac, 0x55, 0x45, 0x11, 0xaa, 0xb9, 0x13, 0x2c, 0x6f, 0x26, 0xc3, 0x4e, 0x8c, 0x6d, 0x99, 0x7, 0x90}}
+	info := bindataFileInfo{name: "templates/unmarshal-command-param.tpl", size: 2173, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x1e, 0x6f, 0x72, 0xad, 0x31, 0xc7, 0x9d, 0xfa, 0xd8, 0x6e, 0x4a, 0x49, 0x77, 0xda, 0xd0, 0xe4, 0x1d, 0x7b, 0xdb, 0xb8, 0x97, 0xa7, 0xd4, 0x2d, 0x2b, 0xef, 0x3c, 0x6e, 0x3d, 0x9d, 0x3b, 0x19}}
 	return a, nil
 }
 
@@ -318,7 +318,7 @@ func templatesUnmarshalCommandParamsTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/unmarshal-command-params.tpl", size: 1147, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/unmarshal-command-params.tpl", size: 1147, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xbc, 0x3a, 0x46, 0x4b, 0x50, 0x93, 0x6f, 0x5f, 0x7b, 0x25, 0x7e, 0xa1, 0xab, 0xf3, 0x11, 0x54, 0x47, 0x9e, 0x7d, 0xcf, 0x9a, 0x2d, 0xf8, 0xe, 0x81, 0x42, 0xbb, 0x27, 0x24, 0x81, 0xd5, 0x37}}
 	return a, nil
 }
@@ -338,7 +338,7 @@ func templatesUnmarshalCommandVgParamsTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/unmarshal-command-vg-params.tpl", size: 2956, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/unmarshal-command-vg-params.tpl", size: 2956, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x86, 0x2b, 0x92, 0x19, 0xe4, 0x48, 0x12, 0xe6, 0x86, 0x1c, 0x92, 0x1c, 0x2f, 0x98, 0xdc, 0xb9, 0x99, 0xc5, 0x5b, 0xa6, 0x6a, 0x9c, 0xe7, 0x3, 0x5b, 0x10, 0xe8, 0x54, 0x4a, 0x9b, 0x52, 0x22}}
 	return a, nil
 }
@@ -358,7 +358,7 @@ func templatesUnmarshalVariantTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/unmarshal-variant.tpl", size: 843, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/unmarshal-variant.tpl", size: 843, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf5, 0x55, 0x14, 0x78, 0x97, 0x67, 0x6e, 0x53, 0xf2, 0xb4, 0x6a, 0x27, 0x8d, 0x65, 0x62, 0x8d, 0xf4, 0xe, 0x22, 0x7b, 0x43, 0x39, 0xba, 0x8c, 0x8e, 0x7b, 0xa2, 0xd7, 0x81, 0x3b, 0x6a, 0x37}}
 	return a, nil
 }
@@ -378,7 +378,7 @@ func templatesUnmarshalVgVariantTpl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "templates/unmarshal-vg-variant.tpl", size: 940, mode: os.FileMode(0644), modTime: time.Unix(1566164496, 0)}
+	info := bindataFileInfo{name: "templates/unmarshal-vg-variant.tpl", size: 940, mode: os.FileMode(0644), modTime: time.Unix(1593465149, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x24, 0x73, 0xc3, 0x85, 0x21, 0xc7, 0xe9, 0x1a, 0xdf, 0x70, 0x2c, 0x51, 0x6c, 0x75, 0x59, 0xdb, 0x58, 0xa6, 0x1f, 0x20, 0x6e, 0xd8, 0x2f, 0x7, 0xcb, 0x74, 0xf0, 0xf4, 0x86, 0xb4, 0xb5, 0x2f}}
 	return a, nil
 }
@@ -474,36 +474,25 @@ func AssetNames() []string {
 
 // _bindata is a table, holding each asset generator, mapped to its name.
 var _bindata = map[string]func() (*asset, error){
-	"data/zwave-defs.xml": dataZwaveDefsXml,
-
-	"templates/command-classes.tpl": templatesCommandClassesTpl,
-
-	"templates/command-struct-fields.tpl": templatesCommandStructFieldsTpl,
-
-	"templates/command.tpl": templatesCommandTpl,
-
-	"templates/devices.tpl": templatesDevicesTpl,
-
-	"templates/import.tpl": templatesImportTpl,
-
-	"templates/marshal-command-param.tpl": templatesMarshalCommandParamTpl,
-
-	"templates/marshal-command-params.tpl": templatesMarshalCommandParamsTpl,
-
-	"templates/marshal-command-vg-params.tpl": templatesMarshalCommandVgParamsTpl,
-
-	"templates/marshal-variant.tpl": templatesMarshalVariantTpl,
-
-	"templates/unmarshal-command-param.tpl": templatesUnmarshalCommandParamTpl,
-
-	"templates/unmarshal-command-params.tpl": templatesUnmarshalCommandParamsTpl,
-
+	"data/zwave-defs.xml":                       dataZwaveDefsXml,
+	"templates/command-classes.tpl":             templatesCommandClassesTpl,
+	"templates/command-struct-fields.tpl":       templatesCommandStructFieldsTpl,
+	"templates/command.tpl":                     templatesCommandTpl,
+	"templates/devices.tpl":                     templatesDevicesTpl,
+	"templates/import.tpl":                      templatesImportTpl,
+	"templates/marshal-command-param.tpl":       templatesMarshalCommandParamTpl,
+	"templates/marshal-command-params.tpl":      templatesMarshalCommandParamsTpl,
+	"templates/marshal-command-vg-params.tpl":   templatesMarshalCommandVgParamsTpl,
+	"templates/marshal-variant.tpl":             templatesMarshalVariantTpl,
+	"templates/unmarshal-command-param.tpl":     templatesUnmarshalCommandParamTpl,
+	"templates/unmarshal-command-params.tpl":    templatesUnmarshalCommandParamsTpl,
 	"templates/unmarshal-command-vg-params.tpl": templatesUnmarshalCommandVgParamsTpl,
-
-	"templates/unmarshal-variant.tpl": templatesUnmarshalVariantTpl,
-
-	"templates/unmarshal-vg-variant.tpl": templatesUnmarshalVgVariantTpl,
+	"templates/unmarshal-variant.tpl":           templatesUnmarshalVariantTpl,
+	"templates/unmarshal-vg-variant.tpl":        templatesUnmarshalVgVariantTpl,
 }
+
+// AssetDebug is true if the assets were built with the debug flag enabled.
+const AssetDebug = false
 
 // AssetDir returns the file names below a certain
 // directory embedded in the file by go-bindata.

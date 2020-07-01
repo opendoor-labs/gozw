@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/gozwave/gozw"
-	"github.com/gozwave/gozw/cc"
-	"github.com/gozwave/gozw/cc/allclasses"
+	"github.com/opendoor-labs/gozw"
+	"github.com/opendoor-labs/gozw/cc"
+	"github.com/opendoor-labs/gozw/cc/allclasses"
 )
 
 var networkKey = []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}

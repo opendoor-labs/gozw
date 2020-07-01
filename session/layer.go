@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gozwave/gozw/frame"
-	"github.com/gozwave/gozw/protocol"
+	"github.com/opendoor-labs/gozw/frame"
+	"github.com/opendoor-labs/gozw/protocol"
 	"go.uber.org/zap"
 )
 

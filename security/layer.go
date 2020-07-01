@@ -6,9 +6,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gozwave/gozw/cc"
-	"github.com/gozwave/gozw/cc/security"
-	"github.com/gozwave/gozw/serialapi"
+	"github.com/opendoor-labs/gozw/cc"
+	"github.com/opendoor-labs/gozw/cc/security"
+	"github.com/opendoor-labs/gozw/serialapi"
 	"go.uber.org/zap"
 )
 

@@ -5,7 +5,7 @@ package allclasses
 
 import (
        {{range .CommandClasses}}
-       "github.com/gozwave/gozw/cc/{{.GetDirName}}"
+       "github.com/opendoor-labs/gozw/cc/{{.GetDirName}}"
        {{- end}}
 )
 

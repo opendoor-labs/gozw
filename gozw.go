@@ -12,14 +12,14 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/gozwave/gozw/cc"
-	zwsec "github.com/gozwave/gozw/cc/security"
-	"github.com/gozwave/gozw/frame"
-	"github.com/gozwave/gozw/protocol"
-	"github.com/gozwave/gozw/security"
-	"github.com/gozwave/gozw/serialapi"
-	"github.com/gozwave/gozw/session"
-	"github.com/gozwave/gozw/transport"
+	"github.com/opendoor-labs/gozw/cc"
+	zwsec "github.com/opendoor-labs/gozw/cc/security"
+	"github.com/opendoor-labs/gozw/frame"
+	"github.com/opendoor-labs/gozw/protocol"
+	"github.com/opendoor-labs/gozw/security"
+	"github.com/opendoor-labs/gozw/serialapi"
+	"github.com/opendoor-labs/gozw/session"
+	"github.com/opendoor-labs/gozw/transport"
 )
 
 // MaxSecureInclusionDuration is the timeout for secure inclusion mode. If this

@@ -1,6 +1,6 @@
 package serialapi
 
-import "github.com/gozwave/gozw/protocol"
+import "github.com/opendoor-labs/gozw/protocol"
 
 // ControllerUpdate .
 type ControllerUpdate struct {

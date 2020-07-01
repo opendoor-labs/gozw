@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/gozwave/gozw/protocol"
-	"github.com/gozwave/gozw/session"
+	"github.com/opendoor-labs/gozw/protocol"
+	"github.com/opendoor-labs/gozw/session"
 	"go.uber.org/zap"
 )
 

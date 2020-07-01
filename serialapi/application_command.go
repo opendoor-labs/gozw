@@ -1,6 +1,6 @@
 package serialapi
 
-import "github.com/gozwave/gozw/protocol"
+import "github.com/opendoor-labs/gozw/protocol"
 
 // ApplicationCommand contains an application level command.
 type ApplicationCommand struct {

@@ -28,7 +28,7 @@ func main() {
 		return nil
 	}
 
-	app.Commands = []*cli.Command{
+	app.Commands = []cli.Command{
 		{
 			Name:  "devices",
 			Usage: "Generate device info",

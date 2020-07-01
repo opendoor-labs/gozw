@@ -3,8 +3,8 @@ package serialapi
 import (
 	"time"
 
-	"github.com/gozwave/gozw/protocol"
-	"github.com/gozwave/gozw/session"
+	"github.com/opendoor-labs/gozw/protocol"
+	"github.com/opendoor-labs/gozw/session"
 )
 
 // SoftReset will perform a  soft reset on the device.

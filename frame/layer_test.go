@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gozwave/gozw/testutil"
+	"github.com/opendoor-labs/gozw/testutil"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 )
