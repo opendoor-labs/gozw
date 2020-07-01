@@ -6,7 +6,7 @@ package sensormultilevelv11
 import (
 	"encoding/gob"
 
-	"github.com/gozwave/gozw/cc"
+	"github.com/opendoor-labs/gozw/cc"
 )
 
 const CommandSupportedGetSensor cc.CommandID = 0x01

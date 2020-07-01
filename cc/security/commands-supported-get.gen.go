@@ -6,7 +6,7 @@ package security
 import (
 	"encoding/gob"
 
-	"github.com/gozwave/gozw/cc"
+	"github.com/opendoor-labs/gozw/cc"
 )
 
 const CommandCommandsSupportedGet cc.CommandID = 0x02

@@ -2,3 +2,6 @@
 /vendor
 bin/
 .idea
+gen/gen
+go-bindata
+AppendSliceValue

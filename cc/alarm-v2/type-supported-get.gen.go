@@ -6,7 +6,7 @@ package alarmv2
 import (
 	"encoding/gob"
 
-	"github.com/gozwave/gozw/cc"
+	"github.com/opendoor-labs/gozw/cc"
 )
 
 const CommandTypeSupportedGet cc.CommandID = 0x07

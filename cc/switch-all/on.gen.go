@@ -6,7 +6,7 @@ package switchall
 import (
 	"encoding/gob"
 
-	"github.com/gozwave/gozw/cc"
+	"github.com/opendoor-labs/gozw/cc"
 )
 
 const CommandOn cc.CommandID = 0x04

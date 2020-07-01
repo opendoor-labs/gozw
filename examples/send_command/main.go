@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/gozwave/gozw"
-	switchbinary "github.com/gozwave/gozw/cc/switch-binary"
+	"github.com/opendoor-labs/gozw"
+	switchbinary "github.com/opendoor-labs/gozw/cc/switch-binary"
 )
 
 var networkKey = []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}

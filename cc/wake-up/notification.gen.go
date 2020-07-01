@@ -6,7 +6,7 @@ package wakeup
 import (
 	"encoding/gob"
 
-	"github.com/gozwave/gozw/cc"
+	"github.com/opendoor-labs/gozw/cc"
 )
 
 const CommandNotification cc.CommandID = 0x07

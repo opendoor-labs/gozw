@@ -8,7 +8,7 @@ import (
 	"encoding/gob"
 	"errors"
 
-	"github.com/gozwave/gozw/cc"
+	"github.com/opendoor-labs/gozw/cc"
 )
 
 const CommandIntervalCapabilitiesReport cc.CommandID = 0x0A

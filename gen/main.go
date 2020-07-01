@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/codegangsta/cli"
 	"github.com/pkg/errors"
+	"github.com/urfave/cli"
 )
 
 func main() {
@@ -33,11 +33,11 @@ func main() {
 			Name:  "devices",
 			Usage: "Generate device info",
 			Flags: []cli.Flag{
-				&cli.StringFlag{
+				cli.StringFlag{
 					Name:  "output, o",
 					Usage: "Output filename",
 				},
-				&cli.StringFlag{
+				cli.StringFlag{
 					Name:  "config, c",
 					Usage: "Config file",
 				},
@@ -60,11 +60,11 @@ func main() {
 			Name:  "command-classes",
 			Usage: "Generate command class",
 			Flags: []cli.Flag{
-				&cli.StringFlag{
+				cli.StringFlag{
 					Name:  "output, o",
 					Usage: "Output directory",
 				},
-				&cli.StringFlag{
+				cli.StringFlag{
 					Name:  "config, c",
 					Usage: "Config file",
 				},
@@ -85,11 +85,11 @@ func main() {
 			Name:  "parser",
 			Usage: "Generate command class parser",
 			Flags: []cli.Flag{
-				&cli.StringFlag{
+				cli.StringFlag{
 					Name:  "output, o",
 					Usage: "Output directory",
 				},
-				&cli.StringFlag{
+				cli.StringFlag{
 					Name:  "config, c",
 					Usage: "Config file",
 				},
